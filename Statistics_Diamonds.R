@@ -2,6 +2,10 @@ library(ggplot2)
 library(dplyr)
 library(tidyr)
 library(gt)
+library(tidyverse)
+library(GGally)
+library(infer)
+library(ggcorrplot)
 
 # \describe{
 #   \item{price}{price in US dollars ($326--$18,823)}
@@ -142,3 +146,43 @@ ggplot(train_set, aes(x = carat, y = price)) +
   geom_point(alpha = 0.2) +
   coord_cartesian(xlim = c(0, 5), ylim = c(0, 20000)) +
   labs(title = "Preis in Abhängigkeit vom Karatgewicht", x = "Carat", y = "Preis (USD)")
+
+## Correlation
+# Below we create a correlation Matrix for all the numeric values from our train set.
+# We see that there is strong postive correlation between the price, carat and the xyz values.
+# While there is very little correlation between price and depth and table.
+# Also the variables carat and x, y and z are postively correlated, which makes perfect sense
+# due to the fact that carat is the weight of the diamond and x, y and z are lenght, width
+# and depth of the diamond (in mm). [Official Documentation](https://ggplot2.tidyverse.org/reference/diamonds.html)
+
+# Create correlation Matrix
+train_corel <- train_set |>
+  select(where(is.numeric)) |>
+  cor() |>
+  round(digits = 2)
+
+# Display correlation plot, easier to us than just correlation Matrix
+ggcorrplot(train_corel, lab = TRUE)
+
+## Creating Linear Models
+# Based on our insights from the previous section we create 4 linear models with the following variables to predict a diamonds price: \
+# - **model1**: carat, x, y, z (naive approach, just use all variables that have high correlate with price)
+# - **model2**: carat, depth, table, x, y, z (use all numeric variables)
+# - **model3**: carat, cut, color, clarity, depth, table, x, y, z (all variables available)
+# - **model4**: carat, cut, color, clarity (based on [this article](https://4cs.gia.edu/en-us/4cs-of-diamond-quality/) these influence the quality and maybe also the price)
+
+model1 <- lm(price ~ carat + x + y + z, data = train_set)
+coef(model1) |>
+  print() # pretty formatting
+
+model2 <- lm(price ~ carat + depth + table + x + y + z, data = train_set)
+coef(model2) |>
+  print()
+
+model3 <- lm(price ~ carat + cut + color + clarity + depth + table + x + y + z, data = train_set)
+coef(model3) |>
+  print()
+
+model4 <- lm(price ~ carat + cut + color + clarity, data = train_set)
+coef(model4) |>
+  print()
