@@ -6,6 +6,8 @@ library(tidyverse)
 library(GGally)
 library(infer)
 library(ggcorrplot)
+library(stringr)
+library(Metrics)
 
 # \describe{
 #   \item{price}{price in US dollars ($326--$18,823)}
@@ -149,10 +151,10 @@ ggplot(train_set, aes(x = carat, y = price)) +
 
 ## Correlation
 # Below we create a correlation Matrix for all the numeric values from our train set.
-# We see that there is strong postive correlation between the price, carat and the xyz values.
+# We see that there is strong positive correlation between the price, carat and the xyz values.
 # While there is very little correlation between price and depth and table.
-# Also the variables carat and x, y and z are postively correlated, which makes perfect sense
-# due to the fact that carat is the weight of the diamond and x, y and z are lenght, width
+# Also the variables carat and x, y and z are positively correlated, which makes perfect sense
+# due to the fact that carat is the weight of the diamond and x, y and z are length, width
 # and depth of the diamond (in mm). [Official Documentation](https://ggplot2.tidyverse.org/reference/diamonds.html)
 
 # Create correlation Matrix
@@ -186,3 +188,178 @@ coef(model3) |>
 model4 <- lm(price ~ carat + cut + color + clarity, data = train_set)
 coef(model4) |>
   print()
+
+# Ranking der wichtigsten Effekte (nach absolutem Betrag) -- keine Standardisierung
+rank_betas <- function(model, top_n = NULL, remove_intercept = TRUE) {
+  df <- coef(model) |>
+    tibble::enframe(name = "term", value = "beta") |>
+    mutate(abs_beta = abs(beta))
+  
+  # Bedingung außerhalb der Pipe anwenden
+  if (remove_intercept) {
+    df <- df |> filter(term != "(Intercept)")
+  }
+  
+  df <- df |> arrange(desc(abs_beta))
+  
+  if (!is.null(top_n)) {
+    df <- head(df, top_n)
+  }
+  
+  return(df)
+}
+
+# ---- Rankings erstellen ----
+cat("\n====== MODEL 1: price ~ carat + x + y + z ======\n")
+rank_m1 <- rank_betas(model1)
+print(rank_m1, n = nrow(rank_m1))
+
+cat("\n====== MODEL 2: price ~ carat + depth + table + x + y + z ======\n")
+rank_m2 <- rank_betas(model2)
+print(rank_m2, n = nrow(rank_m2))
+
+cat("\n====== MODEL 3: price ~ carat + cut + color + clarity + depth + table + x + y + z ======\n")
+rank_m3 <- rank_betas(model3)
+print(rank_m3, n = 20)  # viele Terme durch Faktoren
+
+cat("\n====== MODEL 4: price ~ carat + cut + color + clarity ======\n")
+rank_m4 <- rank_betas(model4)
+print(rank_m4, n = 20)
+
+
+## T-Test & F-Test
+# ---- Funktion zur Extraktion relevanter Statistik ----
+model_stats <- function(model) {
+  s <- summary(model)
+  
+  list(
+    t_tests = s$coefficients,      # T-Tests der Regressionskoeffizienten
+    f_test = s$fstatistic,         # F-Test des Gesamtmodells
+    r2 = s$r.squared,              # R²
+    adj_r2 = s$adj.r.squared,      # Adjusted R²
+    aic = AIC(model)               # AIC
+  )
+}
+
+# ---- Modelle auswerten ----
+stats_m1 <- model_stats(model1)
+stats_m2 <- model_stats(model2)
+stats_m3 <- model_stats(model3)
+stats_m4 <- model_stats(model4)
+
+# ---- Ausgabe für jedes Modell ----
+
+cat("===== MODEL 1: price ~ carat + x + y + z =====\n")
+print(stats_m1$t_tests)
+cat("\nF-Test:\n")
+print(stats_m1$f_test)
+cat("\nR²:", stats_m1$r2, "| adj. R²:", stats_m1$adj_r2, "\n")
+cat("AIC:", stats_m1$aic, "\n\n")
+
+
+cat("===== MODEL 2: price ~ carat + depth + table + x + y + z =====\n")
+print(stats_m2$t_tests)
+cat("\nF-Test:\n")
+print(stats_m2$f_test)
+cat("\nR²:", stats_m2$r2, "| adj. R²:", stats_m2$adj_r2, "\n")
+cat("AIC:", stats_m2$aic, "\n\n")
+
+
+cat("===== MODEL 3: price ~ carat + cut + color + clarity + depth + table + x + y + z =====\n")
+print(stats_m3$t_tests)
+cat("\nF-Test:\n")
+print(stats_m3$f_test)
+cat("\nR²:", stats_m3$r2, "| adj. R²:", stats_m3$adj_r2, "\n")
+cat("AIC:", stats_m3$aic, "\n\n")
+
+
+cat("===== MODEL 4: price ~ carat + cut + color + clarity =====\n")
+print(stats_m4$t_tests)
+cat("\nF-Test:\n")
+print(stats_m4$f_test)
+cat("\nR²:", stats_m4$r2, "| adj. R²:", stats_m4$adj_r2, "\n")
+cat("AIC:", stats_m4$aic, "\n\n")
+
+
+## RMSE
+rmse_model <- function(model, train_data, val_data) {
+  pred_train <- predict(model, train_data)
+  pred_val   <- predict(model, val_data)
+  
+  rmse_train <- rmse(train_data$price, pred_train)
+  rmse_val   <- rmse(val_data$price, pred_val)
+  
+  return(list(train_rmse = rmse_train, val_rmse = rmse_val))
+}
+
+rmse_m1 <- rmse_model(model1, train_set, validation_set)
+rmse_m2 <- rmse_model(model2, train_set, validation_set)
+rmse_m3 <- rmse_model(model3, train_set, validation_set)
+rmse_m4 <- rmse_model(model4, train_set, validation_set)
+
+cat("===== MODEL 1 =====\n")
+print(rmse_m1)
+
+cat("\n===== MODEL 2 =====\n")
+print(rmse_m2)
+
+cat("\n===== MODEL 3 =====\n")
+print(rmse_m3)
+
+cat("\n===== MODEL 4 =====\n")
+print(rmse_m4)
+
+## Bestes Modell und Residuen 
+
+res <- residuals(model3)
+fitted_vals <- fitted(model3)
+
+# Residuen vs. Fitted Plot (Homoskedastizität)
+plot(fitted_vals, res,
+     main = "Residuals vs Fitted",
+     xlab = "Fitted Values",
+     ylab = "Residuals",
+     pch = 20, col = rgb(0,0,0,0.3))
+abline(h = 0, col = "red", lwd = 2)
+
+# QQ‑Plot (Normalverteilung der Residuen)
+qqnorm(res, main = "QQ-Plot der Residuen", pch = 20, col = rgb(0,0,0,0.3))
+qqline(res, col = "red", lwd = 2)
+
+# Histogramm der Residuen
+hist(res, breaks = 50,
+     main = "Histogramm der Residuen",
+     xlab = "Residuen",
+     col = "lightblue", border = "white")
+
+# Standardisierte Residuen Plot (optional, aber gut)
+std_res <- studres(model3)
+
+plot(std_res,
+     main = "Standardisierte Residuen",
+     ylab = "Standardisierte Residuen",
+     xlab = "Index",
+     pch = 20, col = rgb(0,0,0,0.3))
+abline(h = c(-3, 3), col = "red", lwd = 2)
+
+
+## Prognose 
+# ---- Prognose für das Test-Set ----
+pred_test <- predict(model3, test_set)
+
+# ---- RMSE berechnen ----
+rmse_test <- rmse(test_set$price, pred_test)
+
+cat("RMSE Test-Set (Modell 3):", rmse_test, "\n")
+
+rmse_test_all <- function(model, name) {
+  pred <- predict(model, test_set)
+  val <- rmse(test_set$price, pred)
+  cat(name, ": ", val, "\n")
+}
+
+rmse_test_all(model1, "Model 1")
+rmse_test_all(model2, "Model 2")
+rmse_test_all(model3, "Model 3")
+rmse_test_all(model4, "Model 4")
+
