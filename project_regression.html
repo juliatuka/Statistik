@@ -1,0 +1,1864 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.8.27">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+
+<title>Projektabgabe: Diamonds</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+html { -webkit-text-size-adjust: 100%; }
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+</style>
+
+
+<script src="https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.min.js" integrity="sha384-ZvpUoO/+PpLXR1lu4jmpXWu80pZlYUAfxl5NsBMWOEPSjUn/6Z/hRTt8+pR6L4N2" crossorigin="anonymous"></script><script src="project_regression_files/libs/clipboard/clipboard.min.js"></script>
+<script src="project_regression_files/libs/quarto-html/quarto.js" type="module"></script>
+<script src="project_regression_files/libs/quarto-html/tabsets/tabsets.js" type="module"></script>
+<script src="project_regression_files/libs/quarto-html/axe/axe-check.js" type="module"></script>
+<script src="project_regression_files/libs/quarto-html/popper.min.js"></script>
+<script src="project_regression_files/libs/quarto-html/tippy.umd.min.js"></script>
+<script src="project_regression_files/libs/quarto-html/anchor.min.js"></script>
+<link href="project_regression_files/libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="project_regression_files/libs/quarto-html/quarto-syntax-highlighting-ed96de9b727972fe78a7b5d16c58bf87.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="project_regression_files/libs/bootstrap/bootstrap.min.js"></script>
+<link href="project_regression_files/libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="project_regression_files/libs/bootstrap/bootstrap-9e3ffae467580fdb927a41352e75a2e0.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<script src="https://cdn.jsdelivr.net/npm/requirejs@2.3.6/require.min.js" integrity="sha384-c9c+LnTbwQ3aujuU7ULEPVvgLs+Fn6fJUvIGTsuu1ZcCf11fiEubah0ttpca4ntM sha384-6V1/AdqZRWk1KAlWbKBlGhN7VG4iE/yAZcO6NZPMF8od0vukrvr0tg4qY6NSrItx" crossorigin="anonymous"></script>
+
+<script type="application/javascript">define('jquery', [],function() {return window.jQuery;})</script>
+
+
+</head>
+
+<body class="fullcontent quarto-light">
+
+<div id="quarto-content" class="page-columns page-rows-contents page-layout-article">
+
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title">Projektabgabe: Diamonds</h1>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    
+  
+    
+  </div>
+  
+
+
+</header>
+
+
+<p>Datensatz: - <a href="https://ggplot2.tidyverse.org/reference/diamonds.html">ggplot2::diamonds</a> Teammitglieder: - Julia Tuka - Clemens Hafenscher - Michael Maximilian Werfring</p>
+<div id="d341db77" class="cell" data-quarto-private-1="{&quot;key&quot;:&quot;vscode&quot;,&quot;value&quot;:{&quot;languageId&quot;:&quot;r&quot;}}" data-execution_count="95">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(ggplot2)</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(dplyr)</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidyr)</span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(gt)</span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidyverse)</span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(GGally)</span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(infer)</span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(ggcorrplot)</span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(stringr)</span>
+<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(Metrics)</span>
+<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(lsr) </span>
+<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(MASS)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<section id="train-validation-test-split" class="level1">
+<h1>Train, Validation &amp; Test Split</h1>
+<div id="91e4f208" class="cell" data-quarto-private-1="{&quot;key&quot;:&quot;vscode&quot;,&quot;value&quot;:{&quot;languageId&quot;:&quot;r&quot;}}" data-execution_count="35">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>df <span class="ot">&lt;-</span> ggplot2<span class="sc">::</span>diamonds</span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">123</span>) <span class="co"># sorgt dafür, dass der Zufall immer der selbe ist, macht das script reproduzierbar.</span></span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>n <span class="ot">&lt;-</span> <span class="fu">nrow</span>(df)</span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a>idx <span class="ot">&lt;-</span> <span class="fu">sample</span>(n) <span class="co"># daten durchmischen, falls diese nach einer Variale sortiert sind</span></span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a>train_indices <span class="ot">&lt;-</span> idx[<span class="dv">1</span><span class="sc">:</span><span class="fu">floor</span>(<span class="fl">0.6</span> <span class="sc">*</span> n)] <span class="co"># erste 60% des indizes</span></span>
+<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a>val_indices <span class="ot">&lt;-</span> idx[(<span class="fu">floor</span>(<span class="fl">0.6</span> <span class="sc">*</span> n) <span class="sc">+</span> <span class="dv">1</span>)<span class="sc">:</span><span class="fu">floor</span>(<span class="fl">0.8</span> <span class="sc">*</span> n)]</span>
+<span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a>test_indices <span class="ot">&lt;-</span> idx[(<span class="fu">floor</span>(<span class="fl">0.8</span> <span class="sc">*</span> n) <span class="sc">+</span> <span class="dv">1</span>)<span class="sc">:</span>n]</span>
+<span id="cb2-10"><a href="#cb2-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-11"><a href="#cb2-11" aria-hidden="true" tabindex="-1"></a>train_set <span class="ot">&lt;-</span> df[train_indices, ]</span>
+<span id="cb2-12"><a href="#cb2-12" aria-hidden="true" tabindex="-1"></a>validation_set <span class="ot">&lt;-</span> df[val_indices, ]</span>
+<span id="cb2-13"><a href="#cb2-13" aria-hidden="true" tabindex="-1"></a>test_set <span class="ot">&lt;-</span> df[test_indices, ]</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+</section>
+<section id="deskriptive-statistik" class="level1">
+<h1>Deskriptive Statistik</h1>
+<section id="na-einträge" class="level2">
+<h2 class="anchored" data-anchor-id="na-einträge">NA-Einträge</h2>
+<div id="dc6ffc9d" class="cell" data-quarto-private-1="{&quot;key&quot;:&quot;vscode&quot;,&quot;value&quot;:{&quot;languageId&quot;:&quot;r&quot;}}" data-execution_count="36">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="fu">colSums</span>(<span class="fu">is.na</span>(train_set)) <span class="co"># im diamonds dataset sind keine NA-Einträge vorhanden...</span></span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>train_set<span class="sc">$</span>carat[<span class="fu">sample</span>(<span class="dv">1</span><span class="sc">:</span><span class="fu">nrow</span>(train_set), <span class="dv">10</span>)] <span class="ot">&lt;-</span> <span class="cn">NA</span> <span class="co"># ...also setzen wir 10 Werte selbstständig auf NA</span></span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a>train_set<span class="sc">$</span>cut[<span class="fu">sample</span>(<span class="dv">1</span><span class="sc">:</span><span class="fu">nrow</span>(train_set), <span class="dv">10</span>)] <span class="ot">&lt;-</span> <span class="cn">NA</span></span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a>train_set <span class="ot">&lt;-</span> train_set <span class="sc">|&gt;</span> <span class="fu">filter</span>(<span class="sc">!</span><span class="fu">is.na</span>(price)) <span class="co"># für das spätere lineare Modell, wenn NA vorhanden, wird die Zeile nicht übernommen</span></span>
+<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a><span class="co"># NAs behandeln, da wir nur carat und cut auf NA gesetzt haben, müssen nur diese behandelt werden</span></span>
+<span id="cb3-9"><a href="#cb3-9" aria-hidden="true" tabindex="-1"></a>median_carat <span class="ot">&lt;-</span> <span class="fu">median</span>(train_set<span class="sc">$</span>carat, <span class="at">na.rm =</span> <span class="cn">TRUE</span>) <span class="co"># median aus der carat spalte berechnen ohne die na werte zu beachten</span></span>
+<span id="cb3-10"><a href="#cb3-10" aria-hidden="true" tabindex="-1"></a>train_set<span class="sc">$</span>carat[<span class="fu">is.na</span>(train_set<span class="sc">$</span>carat)] <span class="ot">&lt;-</span> median_carat <span class="co"># diesen median überall dort einsetzten wo wert = NA</span></span>
+<span id="cb3-11"><a href="#cb3-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-12"><a href="#cb3-12" aria-hidden="true" tabindex="-1"></a>mode_cut <span class="ot">&lt;-</span> <span class="fu">names</span>(<span class="fu">sort</span>(<span class="fu">table</span>(train_set<span class="sc">$</span>cut), <span class="at">decreasing =</span> <span class="cn">TRUE</span>))[<span class="dv">1</span>]</span>
+<span id="cb3-13"><a href="#cb3-13" aria-hidden="true" tabindex="-1"></a><span class="co"># table -&gt; zählt häufigkeiten der vorkommenden Kategorien</span></span>
+<span id="cb3-14"><a href="#cb3-14" aria-hidden="true" tabindex="-1"></a><span class="co"># Sort -&gt; sortiert das Array absteigend</span></span>
+<span id="cb3-15"><a href="#cb3-15" aria-hidden="true" tabindex="-1"></a><span class="co"># names [1] -&gt; gibt den namen der ersten kategorie zurück</span></span>
+<span id="cb3-16"><a href="#cb3-16" aria-hidden="true" tabindex="-1"></a>train_set<span class="sc">$</span>cut[<span class="fu">is.na</span>(train_set<span class="sc">$</span>cut)] <span class="ot">&lt;-</span> mode_cut <span class="co"># modus von cut wird für die NA Werte eingesetzt</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-display">
+<style>
+.dl-inline {width: auto; margin:0; padding: 0}
+.dl-inline>dt, .dl-inline>dd {float: none; width: auto; display: inline-block}
+.dl-inline>dt::after {content: ":\0020"; padding-right: .5ex}
+.dl-inline>dt:not(:first-of-type) {padding-left: .5ex}
+</style><dl class="dl-inline"><dt>carat</dt><dd>0</dd><dt>cut</dt><dd>0</dd><dt>color</dt><dd>0</dd><dt>clarity</dt><dd>0</dd><dt>depth</dt><dd>0</dd><dt>table</dt><dd>0</dd><dt>price</dt><dd>0</dd><dt>x</dt><dd>0</dd><dt>y</dt><dd>0</dd><dt>z</dt><dd>0</dd></dl>
+</div>
+</div>
+</section>
+<section id="ausreißer-im-datensatz" class="level2">
+<h2 class="anchored" data-anchor-id="ausreißer-im-datensatz">Ausreißer im Datensatz</h2>
+<div id="db6caebe" class="cell" data-quarto-private-1="{&quot;key&quot;:&quot;vscode&quot;,&quot;value&quot;:{&quot;languageId&quot;:&quot;r&quot;}}" data-execution_count="37">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(train_set, <span class="fu">aes</span>(<span class="at">x =</span> price, <span class="at">y =</span> <span class="st">""</span>)) <span class="sc">+</span></span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_boxplot</span>() <span class="sc">+</span></span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">"Boxplot: Preis"</span>, <span class="at">x =</span> <span class="st">"Preis (USD)"</span>, <span class="at">y =</span> <span class="cn">NULL</span>)</span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a><span class="co"># viele Ausreiße durch hohe Preise vorhanden, werden beibehalten, da diese Preise in der realen Marktbeobachtung relevant sind, Diamanten sind ja Luxusartikel</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="project_regression_files/figure-html/cell-5-output-1.png" width="420" height="420" class="figure-img"></p>
+</figure>
+</div>
+</div>
+</div>
+<div id="b858606b" class="cell" data-quarto-private-1="{&quot;key&quot;:&quot;vscode&quot;,&quot;value&quot;:{&quot;languageId&quot;:&quot;r&quot;}}" data-execution_count="38">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(train_set, <span class="fu">aes</span>(<span class="at">x =</span> carat, <span class="at">y =</span> <span class="st">""</span>)) <span class="sc">+</span></span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_boxplot</span>() <span class="sc">+</span></span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">"Boxplot: Carat"</span>, <span class="at">x =</span> <span class="st">"Carat"</span>, <span class="at">y =</span> <span class="cn">NULL</span>)</span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a><span class="co"># Einige sehr große Diamanten vorhanden, meisten sind unter 1, Ausreißer berepresentieren die seleteneren/wertvolleren Diamanten</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="project_regression_files/figure-html/cell-6-output-1.png" width="420" height="420" class="figure-img"></p>
+</figure>
+</div>
+</div>
+</div>
+<div id="f176215e" class="cell" data-quarto-private-1="{&quot;key&quot;:&quot;vscode&quot;,&quot;value&quot;:{&quot;languageId&quot;:&quot;r&quot;}}" data-execution_count="39">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="co"># par(mfrow = c(1,3))</span></span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a><span class="co"># The next 3 plots created will be plotted next to each other</span></span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a><span class="co"># boxplot(train_set$x, main = "x (Länge)", ylab = "mm")</span></span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a><span class="co"># boxplot(train_set$y, main = "y (Breite)", ylab = "mm")</span></span>
+<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a><span class="co"># boxplot(train_set$z, main = "z (Tiefe)", ylab = "mm")</span></span>
+<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a><span class="co"># Put plotting arrangement back to its original state</span></span>
+<span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a><span class="co"># par(mfrow = c(1,1))</span></span>
+<span id="cb6-8"><a href="#cb6-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-9"><a href="#cb6-9" aria-hidden="true" tabindex="-1"></a>train_xyz_long <span class="ot">&lt;-</span> train_set <span class="sc">|&gt;</span></span>
+<span id="cb6-10"><a href="#cb6-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(x, y, z) <span class="sc">|&gt;</span></span>
+<span id="cb6-11"><a href="#cb6-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">pivot_longer</span>(<span class="at">cols =</span> <span class="fu">c</span>(x, y, z), <span class="at">names_to =</span> <span class="st">"dimension"</span>, <span class="at">values_to =</span> <span class="st">"mm"</span>)</span>
+<span id="cb6-12"><a href="#cb6-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-13"><a href="#cb6-13" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(train_xyz_long, <span class="fu">aes</span>(<span class="at">x =</span> mm, <span class="at">y =</span> dimension)) <span class="sc">+</span></span>
+<span id="cb6-14"><a href="#cb6-14" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_boxplot</span>() <span class="sc">+</span></span>
+<span id="cb6-15"><a href="#cb6-15" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">"Boxplots: Abmessungen x/y/z"</span>, <span class="at">x =</span> <span class="st">"mm"</span>, <span class="at">y =</span> <span class="st">"Dimension"</span>)</span>
+<span id="cb6-16"><a href="#cb6-16" aria-hidden="true" tabindex="-1"></a><span class="co"># Einzelne sehr große Werte, einige 0 Werte, diese sind nicht realistisch -&gt; sollten eventuell behandelt werden könnten Eingabe- oder Messfehler sein</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="project_regression_files/figure-html/cell-7-output-1.png" width="420" height="420" class="figure-img"></p>
+</figure>
+</div>
+</div>
+</div>
+<div id="0a10c3e7" class="cell" data-quarto-private-1="{&quot;key&quot;:&quot;vscode&quot;,&quot;value&quot;:{&quot;languageId&quot;:&quot;r&quot;}}" data-execution_count="40">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="fu">boxplot</span>(train_set<span class="sc">$</span>depth, <span class="at">main =</span> <span class="st">"Boxplot: Tiefe (%)"</span>, <span class="at">ylab =</span> <span class="st">"Depth"</span>, <span class="at">horizontal =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a><span class="co"># moderate ausreißer mit plausiblen Werten</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="project_regression_files/figure-html/cell-8-output-1.png" width="420" height="420" class="figure-img"></p>
+</figure>
+</div>
+</div>
+</div>
+<div id="415cb1f0" class="cell" data-quarto-private-1="{&quot;key&quot;:&quot;vscode&quot;,&quot;value&quot;:{&quot;languageId&quot;:&quot;r&quot;}}" data-execution_count="41">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Ausreißer behandeln: Die einzig wirklich auffälligen, die nicht plausibel erscheienn sind x, y, z Werte</span></span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a><span class="co"># siehe =&gt;</span></span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a>train_set <span class="sc">|&gt;</span> <span class="fu">filter</span>(x <span class="sc">==</span> <span class="dv">0</span> <span class="sc">|</span> y <span class="sc">==</span> <span class="dv">0</span> <span class="sc">|</span> z <span class="sc">==</span> <span class="dv">0</span>)</span>
+<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a><span class="co"># Deher werden Beobachtungen mit 'unmöglichen' Abmessungen entfernt, da diese wahrscheinlich Messfehler oder Eingabefehler sind</span></span>
+<span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a>train_set <span class="ot">&lt;-</span> train_set <span class="sc">|&gt;</span> <span class="fu">filter</span>(x <span class="sc">&gt;</span> <span class="dv">0</span>, y <span class="sc">&gt;</span> <span class="dv">0</span>, z <span class="sc">&gt;</span> <span class="dv">0</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-display">
+<table class="dataframe caption-top table table-sm table-striped small">
+<caption>A tibble: 12 × 10</caption>
+<thead>
+<tr class="header">
+<th data-quarto-table-cell-role="th" scope="col">carat</th>
+<th data-quarto-table-cell-role="th" scope="col">cut</th>
+<th data-quarto-table-cell-role="th" scope="col">color</th>
+<th data-quarto-table-cell-role="th" scope="col">clarity</th>
+<th data-quarto-table-cell-role="th" scope="col">depth</th>
+<th data-quarto-table-cell-role="th" scope="col">table</th>
+<th data-quarto-table-cell-role="th" scope="col">price</th>
+<th data-quarto-table-cell-role="th" scope="col">x</th>
+<th data-quarto-table-cell-role="th" scope="col">y</th>
+<th data-quarto-table-cell-role="th" scope="col">z</th>
+</tr>
+<tr class="even">
+<th data-quarto-table-cell-role="th" scope="col">&lt;dbl&gt;</th>
+<th data-quarto-table-cell-role="th" scope="col">&lt;ord&gt;</th>
+<th data-quarto-table-cell-role="th" scope="col">&lt;ord&gt;</th>
+<th data-quarto-table-cell-role="th" scope="col">&lt;ord&gt;</th>
+<th data-quarto-table-cell-role="th" scope="col">&lt;dbl&gt;</th>
+<th data-quarto-table-cell-role="th" scope="col">&lt;dbl&gt;</th>
+<th data-quarto-table-cell-role="th" scope="col">&lt;int&gt;</th>
+<th data-quarto-table-cell-role="th" scope="col">&lt;dbl&gt;</th>
+<th data-quarto-table-cell-role="th" scope="col">&lt;dbl&gt;</th>
+<th data-quarto-table-cell-role="th" scope="col">&lt;dbl&gt;</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>1.01</td>
+<td>Premium</td>
+<td>H</td>
+<td>I1</td>
+<td>58.1</td>
+<td>59</td>
+<td>3167</td>
+<td>6.66</td>
+<td>6.60</td>
+<td>0</td>
+</tr>
+<tr class="even">
+<td>0.71</td>
+<td>Good</td>
+<td>F</td>
+<td>SI2</td>
+<td>64.1</td>
+<td>60</td>
+<td>2130</td>
+<td>0.00</td>
+<td>0.00</td>
+<td>0</td>
+</tr>
+<tr class="odd">
+<td>1.00</td>
+<td>Very Good</td>
+<td>H</td>
+<td>VS2</td>
+<td>63.3</td>
+<td>53</td>
+<td>5139</td>
+<td>0.00</td>
+<td>0.00</td>
+<td>0</td>
+</tr>
+<tr class="even">
+<td>2.20</td>
+<td>Premium</td>
+<td>H</td>
+<td>SI1</td>
+<td>61.2</td>
+<td>59</td>
+<td>17265</td>
+<td>8.42</td>
+<td>8.37</td>
+<td>0</td>
+</tr>
+<tr class="odd">
+<td>2.25</td>
+<td>Premium</td>
+<td>H</td>
+<td>SI2</td>
+<td>62.8</td>
+<td>59</td>
+<td>18034</td>
+<td>0.00</td>
+<td>0.00</td>
+<td>0</td>
+</tr>
+<tr class="even">
+<td>2.02</td>
+<td>Premium</td>
+<td>H</td>
+<td>VS2</td>
+<td>62.7</td>
+<td>53</td>
+<td>18207</td>
+<td>8.02</td>
+<td>7.95</td>
+<td>0</td>
+</tr>
+<tr class="odd">
+<td>1.12</td>
+<td>Premium</td>
+<td>G</td>
+<td>I1</td>
+<td>60.4</td>
+<td>59</td>
+<td>2383</td>
+<td>6.71</td>
+<td>6.67</td>
+<td>0</td>
+</tr>
+<tr class="even">
+<td>0.71</td>
+<td>Good</td>
+<td>F</td>
+<td>SI2</td>
+<td>64.1</td>
+<td>60</td>
+<td>2130</td>
+<td>0.00</td>
+<td>0.00</td>
+<td>0</td>
+</tr>
+<tr class="odd">
+<td>1.20</td>
+<td>Premium</td>
+<td>D</td>
+<td>VVS1</td>
+<td>62.1</td>
+<td>59</td>
+<td>15686</td>
+<td>0.00</td>
+<td>0.00</td>
+<td>0</td>
+</tr>
+<tr class="even">
+<td>1.56</td>
+<td>Ideal</td>
+<td>G</td>
+<td>VS2</td>
+<td>62.2</td>
+<td>54</td>
+<td>12800</td>
+<td>0.00</td>
+<td>0.00</td>
+<td>0</td>
+</tr>
+<tr class="odd">
+<td>1.15</td>
+<td>Ideal</td>
+<td>G</td>
+<td>VS2</td>
+<td>59.2</td>
+<td>56</td>
+<td>5564</td>
+<td>6.88</td>
+<td>6.83</td>
+<td>0</td>
+</tr>
+<tr class="even">
+<td>2.80</td>
+<td>Good</td>
+<td>G</td>
+<td>SI2</td>
+<td>63.8</td>
+<td>58</td>
+<td>18788</td>
+<td>8.90</td>
+<td>8.85</td>
+<td>0</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</section>
+<section id="visualisierungen" class="level2">
+<h2 class="anchored" data-anchor-id="visualisierungen">Visualisierungen</h2>
+<div id="b758e105" class="cell" data-quarto-private-1="{&quot;key&quot;:&quot;vscode&quot;,&quot;value&quot;:{&quot;languageId&quot;:&quot;r&quot;}}" data-execution_count="42">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>desc_table <span class="ot">&lt;-</span> train_set <span class="sc">|&gt;</span></span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(price, carat) <span class="sc">|&gt;</span></span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">pivot_longer</span>(</span>
+<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a>    <span class="at">cols =</span> <span class="fu">everything</span>(),</span>
+<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a>    <span class="at">names_to =</span> <span class="st">"Variable"</span>,</span>
+<span id="cb9-6"><a href="#cb9-6" aria-hidden="true" tabindex="-1"></a>    <span class="at">values_to =</span> <span class="st">"Wert"</span></span>
+<span id="cb9-7"><a href="#cb9-7" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">|&gt;</span></span>
+<span id="cb9-8"><a href="#cb9-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(Variable) <span class="sc">|&gt;</span></span>
+<span id="cb9-9"><a href="#cb9-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarise</span>(</span>
+<span id="cb9-10"><a href="#cb9-10" aria-hidden="true" tabindex="-1"></a>    <span class="at">N =</span> <span class="fu">n</span>(),</span>
+<span id="cb9-11"><a href="#cb9-11" aria-hidden="true" tabindex="-1"></a>    <span class="at">Min =</span> <span class="fu">min</span>(Wert),</span>
+<span id="cb9-12"><a href="#cb9-12" aria-hidden="true" tabindex="-1"></a>    <span class="at">Q1 =</span> <span class="fu">quantile</span>(Wert, <span class="fl">0.25</span>),</span>
+<span id="cb9-13"><a href="#cb9-13" aria-hidden="true" tabindex="-1"></a>    <span class="at">Median =</span> <span class="fu">median</span>(Wert),</span>
+<span id="cb9-14"><a href="#cb9-14" aria-hidden="true" tabindex="-1"></a>    <span class="at">Mean =</span> <span class="fu">mean</span>(Wert),</span>
+<span id="cb9-15"><a href="#cb9-15" aria-hidden="true" tabindex="-1"></a>    <span class="at">Q3 =</span> <span class="fu">quantile</span>(Wert, <span class="fl">0.75</span>),</span>
+<span id="cb9-16"><a href="#cb9-16" aria-hidden="true" tabindex="-1"></a>    <span class="at">Max =</span> <span class="fu">max</span>(Wert),</span>
+<span id="cb9-17"><a href="#cb9-17" aria-hidden="true" tabindex="-1"></a>    <span class="at">.groups =</span> <span class="st">"drop"</span></span>
+<span id="cb9-18"><a href="#cb9-18" aria-hidden="true" tabindex="-1"></a>  )</span>
+<span id="cb9-19"><a href="#cb9-19" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-20"><a href="#cb9-20" aria-hidden="true" tabindex="-1"></a>desc_table</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-display">
+<table class="dataframe caption-top table table-sm table-striped small">
+<caption>A tibble: 2 × 8</caption>
+<thead>
+<tr class="header">
+<th data-quarto-table-cell-role="th" scope="col">Variable</th>
+<th data-quarto-table-cell-role="th" scope="col">N</th>
+<th data-quarto-table-cell-role="th" scope="col">Min</th>
+<th data-quarto-table-cell-role="th" scope="col">Q1</th>
+<th data-quarto-table-cell-role="th" scope="col">Median</th>
+<th data-quarto-table-cell-role="th" scope="col">Mean</th>
+<th data-quarto-table-cell-role="th" scope="col">Q3</th>
+<th data-quarto-table-cell-role="th" scope="col">Max</th>
+</tr>
+<tr class="even">
+<th data-quarto-table-cell-role="th" scope="col">&lt;chr&gt;</th>
+<th data-quarto-table-cell-role="th" scope="col">&lt;int&gt;</th>
+<th data-quarto-table-cell-role="th" scope="col">&lt;dbl&gt;</th>
+<th data-quarto-table-cell-role="th" scope="col">&lt;dbl&gt;</th>
+<th data-quarto-table-cell-role="th" scope="col">&lt;dbl&gt;</th>
+<th data-quarto-table-cell-role="th" scope="col">&lt;dbl&gt;</th>
+<th data-quarto-table-cell-role="th" scope="col">&lt;dbl&gt;</th>
+<th data-quarto-table-cell-role="th" scope="col">&lt;dbl&gt;</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>carat</td>
+<td>32352</td>
+<td>0.2</td>
+<td>0.4</td>
+<td>0.7</td>
+<td>0.7952028</td>
+<td>1.04</td>
+<td>4.5</td>
+</tr>
+<tr class="even">
+<td>price</td>
+<td>32352</td>
+<td>326.0</td>
+<td>945.0</td>
+<td>2395.0</td>
+<td>3913.5963155</td>
+<td>5292.00</td>
+<td>18818.0</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<div id="69031b92" class="cell" data-quarto-private-1="{&quot;key&quot;:&quot;vscode&quot;,&quot;value&quot;:{&quot;languageId&quot;:&quot;r&quot;}}" data-execution_count="43">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb10"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(train_set, <span class="fu">aes</span>(<span class="at">x =</span> price)) <span class="sc">+</span></span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_histogram</span>(<span class="at">bins =</span> <span class="dv">40</span>, <span class="at">color =</span> <span class="st">"black"</span>) <span class="sc">+</span></span>
+<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">coord_cartesian</span>(<span class="at">xlim =</span> <span class="fu">c</span>(<span class="dv">0</span>, <span class="dv">20000</span>)) <span class="sc">+</span></span>
+<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">"Histogramm des Diamantenpreises"</span>, <span class="at">x =</span> <span class="st">"Preis"</span>, <span class="at">y =</span> <span class="st">"Anzahl"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="project_regression_files/figure-html/cell-11-output-1.png" width="420" height="420" class="figure-img"></p>
+</figure>
+</div>
+</div>
+</div>
+<div id="108fe5e9" class="cell" data-quarto-private-1="{&quot;key&quot;:&quot;vscode&quot;,&quot;value&quot;:{&quot;languageId&quot;:&quot;r&quot;}}" data-execution_count="44">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb11"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(train_set, <span class="fu">aes</span>(<span class="at">x =</span> price)) <span class="sc">+</span></span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_density</span>(<span class="fu">aes</span>(<span class="at">y =</span> <span class="fu">after_stat</span>(density <span class="sc">*</span> <span class="dv">100</span>))) <span class="sc">+</span></span>
+<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">coord_cartesian</span>(<span class="at">xlim =</span> <span class="fu">c</span>(<span class="dv">0</span>, <span class="dv">20000</span>)) <span class="sc">+</span></span>
+<span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">"Dichteplot des Diamantenpreises"</span>, <span class="at">x =</span> <span class="st">"Preis"</span>, <span class="at">y =</span> <span class="st">"Dichte (%)"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="project_regression_files/figure-html/cell-12-output-1.png" width="420" height="420" class="figure-img"></p>
+</figure>
+</div>
+</div>
+</div>
+<div id="91e3db6a" class="cell" data-quarto-private-1="{&quot;key&quot;:&quot;vscode&quot;,&quot;value&quot;:{&quot;languageId&quot;:&quot;r&quot;}}" data-execution_count="45">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb12"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(train_set, <span class="fu">aes</span>(<span class="at">x =</span> cut)) <span class="sc">+</span></span>
+<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_bar</span>(<span class="at">color =</span> <span class="st">"black"</span>) <span class="sc">+</span></span>
+<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">"Häufigkeit der Schliffqualität (cut)"</span>, <span class="at">x =</span> <span class="st">"Cut"</span>, <span class="at">y =</span> <span class="st">"Anzahl"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="project_regression_files/figure-html/cell-13-output-1.png" width="420" height="420" class="figure-img"></p>
+</figure>
+</div>
+</div>
+</div>
+<div id="a918d4cd" class="cell" data-quarto-private-1="{&quot;key&quot;:&quot;vscode&quot;,&quot;value&quot;:{&quot;languageId&quot;:&quot;r&quot;}}" data-execution_count="46">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb13"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(train_set, <span class="fu">aes</span>(<span class="at">x =</span> carat, <span class="at">y =</span> price)) <span class="sc">+</span></span>
+<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="at">alpha =</span> <span class="fl">0.2</span>) <span class="sc">+</span></span>
+<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">coord_cartesian</span>(<span class="at">xlim =</span> <span class="fu">c</span>(<span class="dv">0</span>, <span class="dv">5</span>), <span class="at">ylim =</span> <span class="fu">c</span>(<span class="dv">0</span>, <span class="dv">20000</span>)) <span class="sc">+</span></span>
+<span id="cb13-4"><a href="#cb13-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">"Preis in Abhängigkeit vom Karatgewicht"</span>, <span class="at">x =</span> <span class="st">"Carat"</span>, <span class="at">y =</span> <span class="st">"Preis (USD)"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="project_regression_files/figure-html/cell-14-output-1.png" width="420" height="420" class="figure-img"></p>
+</figure>
+</div>
+</div>
+</div>
+</section>
+</section>
+<section id="induktive-statistik" class="level1">
+<h1>Induktive Statistik</h1>
+<div id="d8b23972" class="cell" data-quarto-private-1="{&quot;key&quot;:&quot;vscode&quot;,&quot;value&quot;:{&quot;languageId&quot;:&quot;r&quot;}}" data-execution_count="51">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb14"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a>df <span class="ot">&lt;-</span> ggplot2<span class="sc">::</span>diamonds</span>
+<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a>df <span class="sc">|&gt;</span> <span class="fu">head</span>()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-display">
+<table class="dataframe caption-top table table-sm table-striped small">
+<caption>A tibble: 6 × 10</caption>
+<thead>
+<tr class="header">
+<th data-quarto-table-cell-role="th" scope="col">carat</th>
+<th data-quarto-table-cell-role="th" scope="col">cut</th>
+<th data-quarto-table-cell-role="th" scope="col">color</th>
+<th data-quarto-table-cell-role="th" scope="col">clarity</th>
+<th data-quarto-table-cell-role="th" scope="col">depth</th>
+<th data-quarto-table-cell-role="th" scope="col">table</th>
+<th data-quarto-table-cell-role="th" scope="col">price</th>
+<th data-quarto-table-cell-role="th" scope="col">x</th>
+<th data-quarto-table-cell-role="th" scope="col">y</th>
+<th data-quarto-table-cell-role="th" scope="col">z</th>
+</tr>
+<tr class="even">
+<th data-quarto-table-cell-role="th" scope="col">&lt;dbl&gt;</th>
+<th data-quarto-table-cell-role="th" scope="col">&lt;ord&gt;</th>
+<th data-quarto-table-cell-role="th" scope="col">&lt;ord&gt;</th>
+<th data-quarto-table-cell-role="th" scope="col">&lt;ord&gt;</th>
+<th data-quarto-table-cell-role="th" scope="col">&lt;dbl&gt;</th>
+<th data-quarto-table-cell-role="th" scope="col">&lt;dbl&gt;</th>
+<th data-quarto-table-cell-role="th" scope="col">&lt;int&gt;</th>
+<th data-quarto-table-cell-role="th" scope="col">&lt;dbl&gt;</th>
+<th data-quarto-table-cell-role="th" scope="col">&lt;dbl&gt;</th>
+<th data-quarto-table-cell-role="th" scope="col">&lt;dbl&gt;</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>0.23</td>
+<td>Ideal</td>
+<td>E</td>
+<td>SI2</td>
+<td>61.5</td>
+<td>55</td>
+<td>326</td>
+<td>3.95</td>
+<td>3.98</td>
+<td>2.43</td>
+</tr>
+<tr class="even">
+<td>0.21</td>
+<td>Premium</td>
+<td>E</td>
+<td>SI1</td>
+<td>59.8</td>
+<td>61</td>
+<td>326</td>
+<td>3.89</td>
+<td>3.84</td>
+<td>2.31</td>
+</tr>
+<tr class="odd">
+<td>0.23</td>
+<td>Good</td>
+<td>E</td>
+<td>VS1</td>
+<td>56.9</td>
+<td>65</td>
+<td>327</td>
+<td>4.05</td>
+<td>4.07</td>
+<td>2.31</td>
+</tr>
+<tr class="even">
+<td>0.29</td>
+<td>Premium</td>
+<td>I</td>
+<td>VS2</td>
+<td>62.4</td>
+<td>58</td>
+<td>334</td>
+<td>4.20</td>
+<td>4.23</td>
+<td>2.63</td>
+</tr>
+<tr class="odd">
+<td>0.31</td>
+<td>Good</td>
+<td>J</td>
+<td>SI2</td>
+<td>63.3</td>
+<td>58</td>
+<td>335</td>
+<td>4.34</td>
+<td>4.35</td>
+<td>2.75</td>
+</tr>
+<tr class="even">
+<td>0.24</td>
+<td>Very Good</td>
+<td>J</td>
+<td>VVS2</td>
+<td>62.8</td>
+<td>57</td>
+<td>336</td>
+<td>3.94</td>
+<td>3.96</td>
+<td>2.48</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<section id="inference" class="level2">
+<h2 class="anchored" data-anchor-id="inference">Inference</h2>
+<p>For inference the variable <strong>depth</strong> was chosen. It describes the height of a diamond from the <strong>table</strong> (flat top surface) to the <strong>cutlet</strong> (tip at the bottom) and can be measured in millimeters. In this Dataset it is relative to the width of the diamond, so it must be interpreted as a percentage. See <a href="https://www.diamonds.pro/education/diamond-depth-and-table/">here</a> for further information.</p>
+<div id="cf8d734b" class="cell" data-quarto-private-1="{&quot;key&quot;:&quot;vscode&quot;,&quot;value&quot;:{&quot;languageId&quot;:&quot;r&quot;}}">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb15"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a>confidence_level <span class="ot">=</span> <span class="fl">0.95</span></span>
+<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a>q_lower <span class="ot">=</span> (<span class="dv">1</span> <span class="sc">-</span> confidence_level) <span class="sc">/</span> <span class="dv">2</span></span>
+<span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a>q_upper <span class="ot">=</span> q_lower <span class="sc">+</span> confidence_level</span>
+<span id="cb15-4"><a href="#cb15-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-5"><a href="#cb15-5" aria-hidden="true" tabindex="-1"></a>df <span class="sc">|&gt;</span> </span>
+<span id="cb15-6"><a href="#cb15-6" aria-hidden="true" tabindex="-1"></a>    <span class="fu">pull</span>(depth) <span class="sc">|&gt;</span> </span>
+<span id="cb15-7"><a href="#cb15-7" aria-hidden="true" tabindex="-1"></a>    <span class="fu">quantile</span>(<span class="fu">c</span>(q_lower, q_upper)) <span class="sc">|&gt;</span> </span>
+<span id="cb15-8"><a href="#cb15-8" aria-hidden="true" tabindex="-1"></a>    <span class="fu">print</span>() <span class="co"># For better formatting</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+</section>
+<section id="test-for-normal-distribution" class="level2">
+<h2 class="anchored" data-anchor-id="test-for-normal-distribution">Test for Normal Distribution</h2>
+<p>The histogram and the qq-plot show pretty clearly that a normal distribution is very unlikely to be present. First we will create functions to plot our data against normal distribution.</p>
+<div id="1a6c9e35" class="cell" data-quarto-private-1="{&quot;key&quot;:&quot;vscode&quot;,&quot;value&quot;:{&quot;languageId&quot;:&quot;r&quot;}}" data-execution_count="53">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb16"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="fu">options</span>(<span class="at">repr.plot.width =</span> <span class="dv">10</span>, <span class="at">repr.plot.height =</span> <span class="dv">4</span>) <span class="co"># make plot wider</span></span>
+<span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-3"><a href="#cb16-3" aria-hidden="true" tabindex="-1"></a>plot_depth_agains_norm <span class="ot">&lt;-</span> <span class="cf">function</span>(df) {</span>
+<span id="cb16-4"><a href="#cb16-4" aria-hidden="true" tabindex="-1"></a>    <span class="co"># scale standard-normal distribution with our data</span></span>
+<span id="cb16-5"><a href="#cb16-5" aria-hidden="true" tabindex="-1"></a>    m <span class="ot">&lt;-</span> <span class="fu">mean</span>(df<span class="sc">$</span>depth)</span>
+<span id="cb16-6"><a href="#cb16-6" aria-hidden="true" tabindex="-1"></a>    s <span class="ot">&lt;-</span> <span class="fu">sd</span>(df<span class="sc">$</span>depth)</span>
+<span id="cb16-7"><a href="#cb16-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-8"><a href="#cb16-8" aria-hidden="true" tabindex="-1"></a>    norm_density <span class="ot">&lt;-</span> <span class="cf">function</span>(x) <span class="fu">dnorm</span>(x, </span>
+<span id="cb16-9"><a href="#cb16-9" aria-hidden="true" tabindex="-1"></a>        <span class="at">mean =</span> m,</span>
+<span id="cb16-10"><a href="#cb16-10" aria-hidden="true" tabindex="-1"></a>        <span class="at">sd =</span> s</span>
+<span id="cb16-11"><a href="#cb16-11" aria-hidden="true" tabindex="-1"></a>    )</span>
+<span id="cb16-12"><a href="#cb16-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-13"><a href="#cb16-13" aria-hidden="true" tabindex="-1"></a>    df <span class="sc">|&gt;</span> </span>
+<span id="cb16-14"><a href="#cb16-14" aria-hidden="true" tabindex="-1"></a>    <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> depth)) <span class="sc">+</span></span>
+<span id="cb16-15"><a href="#cb16-15" aria-hidden="true" tabindex="-1"></a>    <span class="fu">geom_histogram</span>(<span class="fu">aes</span>(<span class="at">y =</span> <span class="fu">after_stat</span>(density)), <span class="at">bins =</span> <span class="dv">70</span>, </span>
+<span id="cb16-16"><a href="#cb16-16" aria-hidden="true" tabindex="-1"></a>                   <span class="at">fill =</span> <span class="st">"#cccccc"</span>, <span class="at">color =</span> <span class="st">"white"</span>, <span class="at">alpha =</span> <span class="fl">0.85</span>) <span class="sc">+</span> </span>
+<span id="cb16-17"><a href="#cb16-17" aria-hidden="true" tabindex="-1"></a>    <span class="fu">geom_density</span>(<span class="at">linewidth =</span> <span class="fl">1.2</span>, <span class="at">color =</span> <span class="st">"#0073C2FF"</span>) <span class="sc">+</span></span>
+<span id="cb16-18"><a href="#cb16-18" aria-hidden="true" tabindex="-1"></a>    <span class="fu">geom_function</span>(<span class="at">fun =</span> norm_density, </span>
+<span id="cb16-19"><a href="#cb16-19" aria-hidden="true" tabindex="-1"></a>                  <span class="at">linewidth =</span> <span class="fl">1.2</span>, <span class="at">color =</span> <span class="st">"#006b3d"</span>, <span class="at">linetype =</span> <span class="st">"dashed"</span>) <span class="sc">+</span></span>
+<span id="cb16-20"><a href="#cb16-20" aria-hidden="true" tabindex="-1"></a>    <span class="fu">theme_minimal</span>(<span class="at">base_size =</span> <span class="dv">14</span>) <span class="sc">+</span></span>
+<span id="cb16-21"><a href="#cb16-21" aria-hidden="true" tabindex="-1"></a>    <span class="fu">labs</span>(</span>
+<span id="cb16-22"><a href="#cb16-22" aria-hidden="true" tabindex="-1"></a>        <span class="at">title =</span> <span class="st">"Diamond Depth Distribution vs. Normal Curve"</span>,</span>
+<span id="cb16-23"><a href="#cb16-23" aria-hidden="true" tabindex="-1"></a>        <span class="at">subtitle =</span> <span class="fu">paste0</span>( <span class="co"># concats strings with no separator</span></span>
+<span id="cb16-24"><a href="#cb16-24" aria-hidden="true" tabindex="-1"></a>            <span class="st">"Blue line = Sample Distribution</span><span class="sc">\n</span><span class="st">Dashed Green = Normal Distribution (µ="</span>, <span class="fu">round</span>(m, <span class="dv">1</span>), <span class="st">", σ="</span>, <span class="fu">round</span>(s, <span class="dv">1</span>), <span class="st">")"</span>),</span>
+<span id="cb16-25"><a href="#cb16-25" aria-hidden="true" tabindex="-1"></a>        <span class="at">x =</span> <span class="st">"depth (%)"</span>,</span>
+<span id="cb16-26"><a href="#cb16-26" aria-hidden="true" tabindex="-1"></a>        <span class="at">y =</span> <span class="st">"density"</span>,</span>
+<span id="cb16-27"><a href="#cb16-27" aria-hidden="true" tabindex="-1"></a>    ) <span class="sc">+</span></span>
+<span id="cb16-28"><a href="#cb16-28" aria-hidden="true" tabindex="-1"></a>    <span class="fu">theme</span>(</span>
+<span id="cb16-29"><a href="#cb16-29" aria-hidden="true" tabindex="-1"></a>        <span class="at">panel.grid.minor =</span> <span class="fu">element_blank</span>(),</span>
+<span id="cb16-30"><a href="#cb16-30" aria-hidden="true" tabindex="-1"></a>        <span class="at">plot.title =</span> <span class="fu">element_text</span>(<span class="at">face =</span> <span class="st">"bold"</span>)</span>
+<span id="cb16-31"><a href="#cb16-31" aria-hidden="true" tabindex="-1"></a>    )</span>
+<span id="cb16-32"><a href="#cb16-32" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb16-33"><a href="#cb16-33" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-34"><a href="#cb16-34" aria-hidden="true" tabindex="-1"></a>qq_plot_depth <span class="ot">&lt;-</span> <span class="cf">function</span>(df) {</span>
+<span id="cb16-35"><a href="#cb16-35" aria-hidden="true" tabindex="-1"></a>    df <span class="sc">|&gt;</span> </span>
+<span id="cb16-36"><a href="#cb16-36" aria-hidden="true" tabindex="-1"></a>    <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">sample =</span> depth)) <span class="sc">+</span> </span>
+<span id="cb16-37"><a href="#cb16-37" aria-hidden="true" tabindex="-1"></a>    <span class="fu">stat_qq</span>(<span class="at">color =</span> <span class="st">"#0073C2FF"</span>) <span class="sc">+</span> </span>
+<span id="cb16-38"><a href="#cb16-38" aria-hidden="true" tabindex="-1"></a>    <span class="fu">stat_qq_line</span>(<span class="at">color=</span><span class="st">"#006b3d"</span>, <span class="at">linewidth=</span><span class="fl">1.5</span> , <span class="at">alpha=</span><span class="fl">0.7</span>) <span class="sc">+</span> </span>
+<span id="cb16-39"><a href="#cb16-39" aria-hidden="true" tabindex="-1"></a>    <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">"QQ-Plot depth"</span>, </span>
+<span id="cb16-40"><a href="#cb16-40" aria-hidden="true" tabindex="-1"></a>        <span class="at">x =</span> <span class="st">"Quantiles Normaldistribution"</span>, </span>
+<span id="cb16-41"><a href="#cb16-41" aria-hidden="true" tabindex="-1"></a>        <span class="at">y =</span> <span class="st">"Quantiles depth"</span>)</span>
+<span id="cb16-42"><a href="#cb16-42" aria-hidden="true" tabindex="-1"></a>}</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<div id="fb88458c" class="cell" data-quarto-private-1="{&quot;key&quot;:&quot;vscode&quot;,&quot;value&quot;:{&quot;languageId&quot;:&quot;r&quot;}}" data-execution_count="54">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb17"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plot_depth_agains_norm</span>(df)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="project_regression_files/figure-html/cell-18-output-1.png" width="600" height="240" class="figure-img"></p>
+</figure>
+</div>
+</div>
+</div>
+<div id="0b67afd2" class="cell" data-quarto-private-1="{&quot;key&quot;:&quot;vscode&quot;,&quot;value&quot;:{&quot;languageId&quot;:&quot;r&quot;}}" data-execution_count="55">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb18"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a><span class="fu">qq_plot_depth</span>(df)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="project_regression_files/figure-html/cell-19-output-1.png" width="600" height="240" class="figure-img"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>Lets try if removing the smallest and largest 1% of data would possibly improve the fit.</p>
+<div id="35126490" class="cell" data-quarto-private-1="{&quot;key&quot;:&quot;vscode&quot;,&quot;value&quot;:{&quot;languageId&quot;:&quot;r&quot;}}" data-execution_count="56">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb19"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a>df_filtered <span class="ot">&lt;-</span> df <span class="sc">|&gt;</span> </span>
+<span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a>    <span class="fu">filter</span>(depth <span class="sc">&gt;</span> <span class="fu">quantile</span>(depth, <span class="fl">0.01</span>, <span class="at">na.rm =</span> <span class="cn">TRUE</span>),</span>
+<span id="cb19-3"><a href="#cb19-3" aria-hidden="true" tabindex="-1"></a>           depth <span class="sc">&lt;</span> <span class="fu">quantile</span>(depth, <span class="fl">0.99</span>, <span class="at">na.rm =</span> <span class="cn">TRUE</span>))</span>
+<span id="cb19-4"><a href="#cb19-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb19-5"><a href="#cb19-5" aria-hidden="true" tabindex="-1"></a>df_filtered <span class="sc">|&gt;</span> </span>
+<span id="cb19-6"><a href="#cb19-6" aria-hidden="true" tabindex="-1"></a>    <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> depth)) <span class="sc">+</span></span>
+<span id="cb19-7"><a href="#cb19-7" aria-hidden="true" tabindex="-1"></a>    <span class="fu">geom_histogram</span>(<span class="at">bins =</span> <span class="dv">70</span>, <span class="at">fill =</span> <span class="st">"#0073C2FF"</span>, <span class="at">color =</span> <span class="st">"white"</span>) <span class="sc">+</span></span>
+<span id="cb19-8"><a href="#cb19-8" aria-hidden="true" tabindex="-1"></a>    <span class="fu">theme_minimal</span>() <span class="sc">+</span></span>
+<span id="cb19-9"><a href="#cb19-9" aria-hidden="true" tabindex="-1"></a>    <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">"Depth Distribution (Outliers Removed)"</span>,</span>
+<span id="cb19-10"><a href="#cb19-10" aria-hidden="true" tabindex="-1"></a>         <span class="at">subtitle =</span> <span class="st">"Excluding the top 1% and bottom 1% from sample"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="project_regression_files/figure-html/cell-20-output-1.png" width="600" height="240" class="figure-img"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>We see in the histogram, that both functions came closer to each other but the qq-plot still shows some discrepancies. As expected mu has not changed but sigma did.</p>
+<div id="cb1bd00a" class="cell" data-quarto-private-1="{&quot;key&quot;:&quot;vscode&quot;,&quot;value&quot;:{&quot;languageId&quot;:&quot;r&quot;}}" data-execution_count="58">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb20"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plot_depth_agains_norm</span>(df_filtered)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="project_regression_files/figure-html/cell-21-output-1.png" width="600" height="240" class="figure-img"></p>
+</figure>
+</div>
+</div>
+</div>
+<div id="0a1228db" class="cell" data-quarto-private-1="{&quot;key&quot;:&quot;vscode&quot;,&quot;value&quot;:{&quot;languageId&quot;:&quot;r&quot;}}" data-execution_count="59">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb21"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a><span class="fu">qq_plot_depth</span>(df_filtered)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="project_regression_files/figure-html/cell-22-output-1.png" width="600" height="240" class="figure-img"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>We can now test our <strong>df</strong> againts normal distribution to validate the assumptions from our plots. Lets assume that:<br>
+<strong>H0:</strong> “depth” follows normal distribution<br>
+<strong>H1:</strong> “depth” does not follow normal distribution</p>
+<div id="31faac1e" class="cell" data-quarto-private-1="{&quot;key&quot;:&quot;vscode&quot;,&quot;value&quot;:{&quot;languageId&quot;:&quot;r&quot;}}" data-execution_count="61">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb22"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ks.test</span>(</span>
+<span id="cb22-2"><a href="#cb22-2" aria-hidden="true" tabindex="-1"></a>    <span class="at">x=</span>df<span class="sc">$</span>depth, </span>
+<span id="cb22-3"><a href="#cb22-3" aria-hidden="true" tabindex="-1"></a>    <span class="at">y=</span><span class="st">"pnorm"</span>, <span class="co"># Test against normal distribution</span></span>
+<span id="cb22-4"><a href="#cb22-4" aria-hidden="true" tabindex="-1"></a>    <span class="at">mean=</span><span class="fu">mean</span>(df<span class="sc">$</span>depth), </span>
+<span id="cb22-5"><a href="#cb22-5" aria-hidden="true" tabindex="-1"></a>    <span class="at">sd=</span><span class="fu">sd</span>(df<span class="sc">$</span>depth), </span>
+<span id="cb22-6"><a href="#cb22-6" aria-hidden="true" tabindex="-1"></a>    <span class="at">alternative =</span> <span class="st">"two.sided"</span> <span class="co"># Standard value</span></span>
+<span id="cb22-7"><a href="#cb22-7" aria-hidden="true" tabindex="-1"></a>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning message in ks.test.default(x = df$depth, y = "pnorm", mean = mean(df$depth), :
+"ties should not be present for the one-sample Kolmogorov-Smirnov test"</code></pre>
+</div>
+<div class="cell-output cell-output-display">
+<pre><code>
+    Asymptotic one-sample Kolmogorov-Smirnov test
+
+data:  df$depth
+D = 0.075871, p-value &lt; 2.2e-16
+alternative hypothesis: two-sided</code></pre>
+</div>
+</div>
+<p>We can see from the Kolmogorov-Smirnov test, that the p-value is very small so we need to <strong>reject H0</strong>. Now lets test <strong>df_filtered</strong> for normal distribution to see if sacrificing 2% of our data was worth it. Again we state that: <strong>H0:</strong> “depth” follows normal distribution <strong>H1:</strong> “depth” does not follow normal distribution</p>
+<div id="fcb1f6f9" class="cell" data-quarto-private-1="{&quot;key&quot;:&quot;vscode&quot;,&quot;value&quot;:{&quot;languageId&quot;:&quot;r&quot;}}" data-execution_count="62">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb25"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ks.test</span>(</span>
+<span id="cb25-2"><a href="#cb25-2" aria-hidden="true" tabindex="-1"></a>    <span class="at">x=</span>df_filtered<span class="sc">$</span>depth, <span class="co"># now we use filtered data</span></span>
+<span id="cb25-3"><a href="#cb25-3" aria-hidden="true" tabindex="-1"></a>    <span class="at">y=</span><span class="st">"pnorm"</span>, <span class="co"># Test against normal distribution</span></span>
+<span id="cb25-4"><a href="#cb25-4" aria-hidden="true" tabindex="-1"></a>    <span class="at">mean=</span><span class="fu">mean</span>(df<span class="sc">$</span>depth), </span>
+<span id="cb25-5"><a href="#cb25-5" aria-hidden="true" tabindex="-1"></a>    <span class="at">sd=</span><span class="fu">sd</span>(df<span class="sc">$</span>depth), </span>
+<span id="cb25-6"><a href="#cb25-6" aria-hidden="true" tabindex="-1"></a>    <span class="at">alternative =</span> <span class="st">"two.sided"</span> <span class="co"># Standard value</span></span>
+<span id="cb25-7"><a href="#cb25-7" aria-hidden="true" tabindex="-1"></a>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning message in ks.test.default(x = df_filtered$depth, y = "pnorm", mean = mean(df$depth), :
+"ties should not be present for the one-sample Kolmogorov-Smirnov test"</code></pre>
+</div>
+<div class="cell-output cell-output-display">
+<pre><code>
+    Asymptotic one-sample Kolmogorov-Smirnov test
+
+data:  df_filtered$depth
+D = 0.080987, p-value &lt; 2.2e-16
+alternative hypothesis: two-sided</code></pre>
+</div>
+</div>
+<p>Again p-value is really small so we have to <strong>reject H0</strong>. In conclusion it can be said, that there is very strong evidence, that our data (filtered and unfiltered) does not follow normal distribution.</p>
+</section>
+<section id="directed-t-test" class="level2">
+<h2 class="anchored" data-anchor-id="directed-t-test">Directed T-Test</h2>
+<p>Based on our extensive knowledge about diamonds we came to the conclusion that the depth of a diamond has some kind of influence on its cut. This means that a diamond with a “Fair” cut should be more shallow than a diamond with an “Ideal” cut according to <a href="https://www.diamondguidance.com/education/diamond-grading/4-cs/cut/fair/">this</a> article.</p>
+<p>We state our Hypothesis like this: <strong>H0</strong>: Mean depth of “Fair” cut diamonds is less than (or equal) to the mean depth of “Ideal” cut diamonds <strong>H1</strong>: Mean depth of “Fair” cut diamonds is greater than the mean depth of “Ideal” cut diamonds</p>
+<div id="0a50d567" class="cell" data-quarto-private-1="{&quot;key&quot;:&quot;vscode&quot;,&quot;value&quot;:{&quot;languageId&quot;:&quot;r&quot;}}" data-execution_count="63">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb28"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb28-1"><a href="#cb28-1" aria-hidden="true" tabindex="-1"></a>df_fair_ideal <span class="ot">&lt;-</span> df <span class="sc">|&gt;</span> <span class="fu">filter</span>(cut <span class="sc">==</span> <span class="st">"Fair"</span> <span class="sc">|</span> cut <span class="sc">==</span> <span class="st">"Ideal"</span>)</span>
+<span id="cb28-2"><a href="#cb28-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb28-3"><a href="#cb28-3" aria-hidden="true" tabindex="-1"></a>df_fair_ideal <span class="sc">|&gt;</span> <span class="fu">t_test</span>(</span>
+<span id="cb28-4"><a href="#cb28-4" aria-hidden="true" tabindex="-1"></a>    <span class="at">formula =</span> depth <span class="sc">~</span> cut, <span class="co"># compare depth, groups defined by cut</span></span>
+<span id="cb28-5"><a href="#cb28-5" aria-hidden="true" tabindex="-1"></a>    <span class="at">alternative =</span> <span class="st">"greater"</span>, <span class="co"># also see H1</span></span>
+<span id="cb28-6"><a href="#cb28-6" aria-hidden="true" tabindex="-1"></a>    <span class="at">order =</span> <span class="fu">c</span>(<span class="st">"Fair"</span>, <span class="st">"Ideal"</span>),</span>
+<span id="cb28-7"><a href="#cb28-7" aria-hidden="true" tabindex="-1"></a>    <span class="at">conf_level=</span><span class="fl">0.95</span>, </span>
+<span id="cb28-8"><a href="#cb28-8" aria-hidden="true" tabindex="-1"></a>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-display">
+<table class="dataframe caption-top table table-sm table-striped small">
+<caption>A tibble: 1 × 7</caption>
+<thead>
+<tr class="header">
+<th data-quarto-table-cell-role="th" scope="col">statistic</th>
+<th data-quarto-table-cell-role="th" scope="col">t_df</th>
+<th data-quarto-table-cell-role="th" scope="col">p_value</th>
+<th data-quarto-table-cell-role="th" scope="col">alternative</th>
+<th data-quarto-table-cell-role="th" scope="col">estimate</th>
+<th data-quarto-table-cell-role="th" scope="col">lower_ci</th>
+<th data-quarto-table-cell-role="th" scope="col">upper_ci</th>
+</tr>
+<tr class="even">
+<th data-quarto-table-cell-role="th" scope="col">&lt;dbl&gt;</th>
+<th data-quarto-table-cell-role="th" scope="col">&lt;dbl&gt;</th>
+<th data-quarto-table-cell-role="th" scope="col">&lt;dbl&gt;</th>
+<th data-quarto-table-cell-role="th" scope="col">&lt;chr&gt;</th>
+<th data-quarto-table-cell-role="th" scope="col">&lt;dbl&gt;</th>
+<th data-quarto-table-cell-role="th" scope="col">&lt;dbl&gt;</th>
+<th data-quarto-table-cell-role="th" scope="col">&lt;dbl&gt;</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>25.64795</td>
+<td>1618.363</td>
+<td>2.514919e-122</td>
+<td>greater</td>
+<td>2.332276</td>
+<td>2.182617</td>
+<td>Inf</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<p>Since the p-value is very small (basically zero) we can <strong>reject H0</strong> and have strong evidence based on our data that the mean depth of “Fair” cut diamonds is grater than the mean depth of “Ideal” cut diamonds. Based on the conf_level of 95% and the lower_ci being at about 2.18% we can also state that we have 95% confidence that “Fair” cut diamonds are 2.18% deeper than “Ideal” cut diamonds.</p>
+</section>
+</section>
+<section id="lineare-regression" class="level1">
+<h1>Lineare Regression</h1>
+<section id="correlation" class="level2">
+<h2 class="anchored" data-anchor-id="correlation">Correlation</h2>
+<p>Below we create a correlation Matrix for all the numeric values from our train set. We see that there is strong positive correlation between the price, carat and the xyz values. While there is very little correlation between price and depth and table. Also the variables carat and x, y and z are positively correlated, which makes perfect sense due to the fact that carat is the weight of the diamond and x, y and z are length, width and depth of the diamond (in mm). <a href="https://ggplot2.tidyverse.org/reference/diamonds.html">Official Documentation</a></p>
+<div id="93710720" class="cell" data-quarto-private-1="{&quot;key&quot;:&quot;vscode&quot;,&quot;value&quot;:{&quot;languageId&quot;:&quot;r&quot;}}">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb29"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb29-1"><a href="#cb29-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Create correlation Matrix</span></span>
+<span id="cb29-2"><a href="#cb29-2" aria-hidden="true" tabindex="-1"></a>train_corel <span class="ot">&lt;-</span> train_set <span class="sc">|&gt;</span></span>
+<span id="cb29-3"><a href="#cb29-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(<span class="fu">where</span>(is.numeric)) <span class="sc">|&gt;</span></span>
+<span id="cb29-4"><a href="#cb29-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">cor</span>() <span class="sc">|&gt;</span></span>
+<span id="cb29-5"><a href="#cb29-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">round</span>(<span class="at">digits =</span> <span class="dv">2</span>)</span>
+<span id="cb29-6"><a href="#cb29-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb29-7"><a href="#cb29-7" aria-hidden="true" tabindex="-1"></a><span class="co"># Display correlation plot, easier to us than just correlation Matrix</span></span>
+<span id="cb29-8"><a href="#cb29-8" aria-hidden="true" tabindex="-1"></a><span class="fu">ggcorrplot</span>(train_corel, <span class="at">lab =</span> <span class="cn">TRUE</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+</section>
+<section id="creating-linear-models" class="level2">
+<h2 class="anchored" data-anchor-id="creating-linear-models">Creating Linear Models</h2>
+<p>Based on our insights from the previous sections we create 4 linear models with the following variables to predict a diamonds price:<br>
+- <strong>model1</strong>: carat, x, y, z (naive approach, just use all variables that have high correlate with price) - <strong>model2</strong>: carat, depth, table, x, y, z (use all numeric variables) - <strong>model3</strong>: carat, cut, color, clarity, depth, table, x, y, z (all variables available) - <strong>model4</strong>: carat, cut, color, clarity (based on <a href="https://4cs.gia.edu/en-us/4cs-of-diamond-quality/">this article</a> these influence the quality and maybe also the price)</p>
+<div id="d8896333" class="cell" data-quarto-private-1="{&quot;key&quot;:&quot;vscode&quot;,&quot;value&quot;:{&quot;languageId&quot;:&quot;r&quot;}}" data-execution_count="65">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb30"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb30-1"><a href="#cb30-1" aria-hidden="true" tabindex="-1"></a>model1 <span class="ot">&lt;-</span> <span class="fu">lm</span>(price <span class="sc">~</span> carat <span class="sc">+</span> x <span class="sc">+</span> y <span class="sc">+</span> z, <span class="at">data =</span> train_set)</span>
+<span id="cb30-2"><a href="#cb30-2" aria-hidden="true" tabindex="-1"></a><span class="fu">coef</span>(model1) <span class="sc">|&gt;</span></span>
+<span id="cb30-3"><a href="#cb30-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">print</span>() <span class="co"># pretty formatting</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>(Intercept)       carat           x           y           z 
+  2985.0239  10897.2981   -159.3904    230.7853  -2303.9138 </code></pre>
+</div>
+</div>
+<div id="b1763db8" class="cell" data-quarto-private-1="{&quot;key&quot;:&quot;vscode&quot;,&quot;value&quot;:{&quot;languageId&quot;:&quot;r&quot;}}" data-execution_count="66">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb32"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb32-1"><a href="#cb32-1" aria-hidden="true" tabindex="-1"></a>model2 <span class="ot">&lt;-</span> <span class="fu">lm</span>(price <span class="sc">~</span> carat <span class="sc">+</span> depth <span class="sc">+</span> table <span class="sc">+</span> x <span class="sc">+</span> y <span class="sc">+</span> z, <span class="at">data =</span> train_set)</span>
+<span id="cb32-2"><a href="#cb32-2" aria-hidden="true" tabindex="-1"></a><span class="fu">coef</span>(model2) <span class="sc">|&gt;</span></span>
+<span id="cb32-3"><a href="#cb32-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">print</span>()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>(Intercept)       carat       depth       table           x           y 
+18969.91635 10983.88100  -165.48857  -102.07337 -1056.06250    82.73102 
+          z 
+ -603.43504 </code></pre>
+</div>
+</div>
+<div id="5da2cc8c" class="cell" data-quarto-private-1="{&quot;key&quot;:&quot;vscode&quot;,&quot;value&quot;:{&quot;languageId&quot;:&quot;r&quot;}}" data-execution_count="67">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb34"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb34-1"><a href="#cb34-1" aria-hidden="true" tabindex="-1"></a>model3 <span class="ot">&lt;-</span> <span class="fu">lm</span>(price <span class="sc">~</span> carat <span class="sc">+</span> cut <span class="sc">+</span> color <span class="sc">+</span> clarity <span class="sc">+</span> depth <span class="sc">+</span> table <span class="sc">+</span> x <span class="sc">+</span> y <span class="sc">+</span> z, <span class="at">data =</span> train_set)</span>
+<span id="cb34-2"><a href="#cb34-2" aria-hidden="true" tabindex="-1"></a><span class="fu">coef</span>(model3) <span class="sc">|&gt;</span></span>
+<span id="cb34-3"><a href="#cb34-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">print</span>()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code> (Intercept)        carat        cut.L        cut.Q        cut.C        cut^4 
+  733.233441 11506.988282   563.621509  -282.197593   128.756448     8.740099 
+     color.L      color.Q      color.C      color^4      color^5      color^6 
+-1919.476699  -645.965520  -168.955314    63.527826   -89.869021   -30.058165 
+   clarity.L    clarity.Q    clarity.C    clarity^4    clarity^5    clarity^6 
+ 4059.828875 -1909.338005   950.775288  -356.870283   236.162830    13.963781 
+   clarity^7        depth        table            x            y            z 
+   88.870568    26.384856   -27.932385  -233.850990   123.680190 -1671.695926 </code></pre>
+</div>
+</div>
+<div id="65f2647a" class="cell" data-quarto-private-1="{&quot;key&quot;:&quot;vscode&quot;,&quot;value&quot;:{&quot;languageId&quot;:&quot;r&quot;}}" data-execution_count="68">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb36"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb36-1"><a href="#cb36-1" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb36-2"><a href="#cb36-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb36-3"><a href="#cb36-3" aria-hidden="true" tabindex="-1"></a>model4 <span class="ot">&lt;-</span> <span class="fu">lm</span>(price <span class="sc">~</span> carat <span class="sc">+</span> cut <span class="sc">+</span> color <span class="sc">+</span> clarity, <span class="at">data =</span> train_set)</span>
+<span id="cb36-4"><a href="#cb36-4" aria-hidden="true" tabindex="-1"></a><span class="fu">coef</span>(model4) <span class="sc">|&gt;</span></span>
+<span id="cb36-5"><a href="#cb36-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">print</span>()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code> (Intercept)        carat        cut.L        cut.Q        cut.C        cut^4 
+-3681.260768  8872.838336   684.630197  -313.066000   159.045941    15.857643 
+     color.L      color.Q      color.C      color^4      color^5      color^6 
+-1866.918332  -595.198208  -175.927479    45.284737   -77.251384   -33.356088 
+   clarity.L    clarity.Q    clarity.C    clarity^4    clarity^5    clarity^6 
+ 4185.343272 -1810.774959   888.682975  -352.603794   218.802968     7.636444 
+   clarity^7 
+  109.825386 </code></pre>
+</div>
+</div>
+<div id="0cd6b8eb" class="cell" data-quarto-private-1="{&quot;key&quot;:&quot;vscode&quot;,&quot;value&quot;:{&quot;languageId&quot;:&quot;r&quot;}}" data-execution_count="70">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb38"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb38-1"><a href="#cb38-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Ranking der wichtigsten Effekte (nach absolutem Betrag) -- keine Standardisierung</span></span>
+<span id="cb38-2"><a href="#cb38-2" aria-hidden="true" tabindex="-1"></a>rank_betas <span class="ot">&lt;-</span> <span class="cf">function</span>(model, <span class="at">top_n =</span> <span class="cn">NULL</span>, <span class="at">remove_intercept =</span> <span class="cn">TRUE</span>) {</span>
+<span id="cb38-3"><a href="#cb38-3" aria-hidden="true" tabindex="-1"></a>  df <span class="ot">&lt;-</span> <span class="fu">coef</span>(model) <span class="sc">|&gt;</span></span>
+<span id="cb38-4"><a href="#cb38-4" aria-hidden="true" tabindex="-1"></a>    tibble<span class="sc">::</span><span class="fu">enframe</span>(<span class="at">name =</span> <span class="st">"term"</span>, <span class="at">value =</span> <span class="st">"beta"</span>) <span class="sc">|&gt;</span></span>
+<span id="cb38-5"><a href="#cb38-5" aria-hidden="true" tabindex="-1"></a>    <span class="fu">mutate</span>(<span class="at">abs_beta =</span> <span class="fu">abs</span>(beta))</span>
+<span id="cb38-6"><a href="#cb38-6" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb38-7"><a href="#cb38-7" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Bedingung außerhalb der Pipe anwenden</span></span>
+<span id="cb38-8"><a href="#cb38-8" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span> (remove_intercept) {</span>
+<span id="cb38-9"><a href="#cb38-9" aria-hidden="true" tabindex="-1"></a>    df <span class="ot">&lt;-</span> df <span class="sc">|&gt;</span> <span class="fu">filter</span>(term <span class="sc">!=</span> <span class="st">"(Intercept)"</span>)</span>
+<span id="cb38-10"><a href="#cb38-10" aria-hidden="true" tabindex="-1"></a>  }</span>
+<span id="cb38-11"><a href="#cb38-11" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb38-12"><a href="#cb38-12" aria-hidden="true" tabindex="-1"></a>  df <span class="ot">&lt;-</span> df <span class="sc">|&gt;</span> <span class="fu">arrange</span>(<span class="fu">desc</span>(abs_beta))</span>
+<span id="cb38-13"><a href="#cb38-13" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb38-14"><a href="#cb38-14" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span> (<span class="sc">!</span><span class="fu">is.null</span>(top_n)) {</span>
+<span id="cb38-15"><a href="#cb38-15" aria-hidden="true" tabindex="-1"></a>    df <span class="ot">&lt;-</span> <span class="fu">head</span>(df, top_n)</span>
+<span id="cb38-16"><a href="#cb38-16" aria-hidden="true" tabindex="-1"></a>  }</span>
+<span id="cb38-17"><a href="#cb38-17" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb38-18"><a href="#cb38-18" aria-hidden="true" tabindex="-1"></a>  <span class="fu">return</span>(df)</span>
+<span id="cb38-19"><a href="#cb38-19" aria-hidden="true" tabindex="-1"></a>}</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+</section>
+<section id="model-ranking" class="level2">
+<h2 class="anchored" data-anchor-id="model-ranking">Model Ranking</h2>
+<div id="5e2d38ed" class="cell" data-quarto-private-1="{&quot;key&quot;:&quot;vscode&quot;,&quot;value&quot;:{&quot;languageId&quot;:&quot;r&quot;}}" data-execution_count="71">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb39"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb39-1"><a href="#cb39-1" aria-hidden="true" tabindex="-1"></a><span class="fu">cat</span>(<span class="st">"</span><span class="sc">\n</span><span class="st">====== MODEL 1: price ~ carat + x + y + z ======</span><span class="sc">\n</span><span class="st">"</span>)</span>
+<span id="cb39-2"><a href="#cb39-2" aria-hidden="true" tabindex="-1"></a>rank_m1 <span class="ot">&lt;-</span> <span class="fu">rank_betas</span>(model1)</span>
+<span id="cb39-3"><a href="#cb39-3" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(rank_m1, <span class="at">n =</span> <span class="fu">nrow</span>(rank_m1))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<div class="ansi-escaped-output">
+<pre>====== MODEL 1: price ~ carat + x + y + z ======
+
+<span class="ansi-bright-black-fg"># A tibble: 4 × 3</span>
+
+  term    beta abs_beta
+
+  <span style="font-style:italic" class="ansi-bright-black-fg">&lt;chr&gt;</span>  <span style="font-style:italic" class="ansi-bright-black-fg">&lt;dbl&gt;</span>    <span style="font-style:italic" class="ansi-bright-black-fg">&lt;dbl&gt;</span>
+
+<span class="ansi-bright-black-fg">1</span> carat <span style="text-decoration:underline">1</span><span style="text-decoration:underline">0</span>897.   <span style="text-decoration:underline">1</span><span style="text-decoration:underline">0</span>897.
+
+<span class="ansi-bright-black-fg">2</span> z     -<span style="text-decoration:underline" class="ansi-red-fg">2</span><span class="ansi-red-fg">30</span><span class="ansi-red-fg">4</span><span class="ansi-red-fg">.</span>    <span style="text-decoration:underline">2</span>304.
+
+<span class="ansi-bright-black-fg">3</span> y       231.     231.
+
+<span class="ansi-bright-black-fg">4</span> x      -<span class="ansi-red-fg">159</span><span class="ansi-red-fg">.</span>     159.
+</pre>
+</div>
+</div>
+</div>
+<div id="da8170f0" class="cell" data-quarto-private-1="{&quot;key&quot;:&quot;vscode&quot;,&quot;value&quot;:{&quot;languageId&quot;:&quot;r&quot;}}" data-execution_count="72">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb40"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb40-1"><a href="#cb40-1" aria-hidden="true" tabindex="-1"></a><span class="fu">cat</span>(<span class="st">"</span><span class="sc">\n</span><span class="st">====== MODEL 2: price ~ carat + depth + table + x + y + z ======</span><span class="sc">\n</span><span class="st">"</span>)</span>
+<span id="cb40-2"><a href="#cb40-2" aria-hidden="true" tabindex="-1"></a>rank_m2 <span class="ot">&lt;-</span> <span class="fu">rank_betas</span>(model2)</span>
+<span id="cb40-3"><a href="#cb40-3" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(rank_m2, <span class="at">n =</span> <span class="fu">nrow</span>(rank_m2))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<div class="ansi-escaped-output">
+<pre>====== MODEL 2: price ~ carat + depth + table + x + y + z ======
+
+<span class="ansi-bright-black-fg"># A tibble: 6 × 3</span>
+
+  term     beta abs_beta
+
+  <span style="font-style:italic" class="ansi-bright-black-fg">&lt;chr&gt;</span>   <span style="font-style:italic" class="ansi-bright-black-fg">&lt;dbl&gt;</span>    <span style="font-style:italic" class="ansi-bright-black-fg">&lt;dbl&gt;</span>
+
+<span class="ansi-bright-black-fg">1</span> carat <span style="text-decoration:underline">1</span><span style="text-decoration:underline">0</span>984.   <span style="text-decoration:underline">1</span><span style="text-decoration:underline">0</span>984. 
+
+<span class="ansi-bright-black-fg">2</span> x     -<span style="text-decoration:underline" class="ansi-red-fg">1</span><span class="ansi-red-fg">05</span><span class="ansi-red-fg">6</span><span class="ansi-red-fg">.</span>    <span style="text-decoration:underline">1</span>056. 
+
+<span class="ansi-bright-black-fg">3</span> z      -<span class="ansi-red-fg">603</span><span class="ansi-red-fg">.</span>     603. 
+
+<span class="ansi-bright-black-fg">4</span> depth  -<span class="ansi-red-fg">165</span><span class="ansi-red-fg">.</span>     165. 
+
+<span class="ansi-bright-black-fg">5</span> table  -<span class="ansi-red-fg">102</span><span class="ansi-red-fg">.</span>     102. 
+
+<span class="ansi-bright-black-fg">6</span> y        82.7     82.7
+</pre>
+</div>
+</div>
+</div>
+<div id="6879e20c" class="cell" data-quarto-private-1="{&quot;key&quot;:&quot;vscode&quot;,&quot;value&quot;:{&quot;languageId&quot;:&quot;r&quot;}}" data-execution_count="73">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb41"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb41-1"><a href="#cb41-1" aria-hidden="true" tabindex="-1"></a><span class="fu">cat</span>(<span class="st">"</span><span class="sc">\n</span><span class="st">====== MODEL 3: price ~ carat + cut + color + clarity + depth + table + x + y + z ======</span><span class="sc">\n</span><span class="st">"</span>)</span>
+<span id="cb41-2"><a href="#cb41-2" aria-hidden="true" tabindex="-1"></a>rank_m3 <span class="ot">&lt;-</span> <span class="fu">rank_betas</span>(model3)</span>
+<span id="cb41-3"><a href="#cb41-3" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(rank_m3, <span class="at">n =</span> <span class="dv">20</span>)  <span class="co"># viele Terme durch Faktoren</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<div class="ansi-escaped-output">
+<pre>====== MODEL 3: price ~ carat + cut + color + clarity + depth + table + x + y + z ======
+
+<span class="ansi-bright-black-fg"># A tibble: 23 × 3</span>
+
+   term         beta abs_beta
+
+   <span style="font-style:italic" class="ansi-bright-black-fg">&lt;chr&gt;</span>       <span style="font-style:italic" class="ansi-bright-black-fg">&lt;dbl&gt;</span>    <span style="font-style:italic" class="ansi-bright-black-fg">&lt;dbl&gt;</span>
+
+<span class="ansi-bright-black-fg"> 1</span> carat     <span style="text-decoration:underline">1</span><span style="text-decoration:underline">1</span>507.   <span style="text-decoration:underline">1</span><span style="text-decoration:underline">1</span>507. 
+
+<span class="ansi-bright-black-fg"> 2</span> clarity.L  <span style="text-decoration:underline">4</span>060.    <span style="text-decoration:underline">4</span>060. 
+
+<span class="ansi-bright-black-fg"> 3</span> color.L   -<span style="text-decoration:underline" class="ansi-red-fg">1</span><span class="ansi-red-fg">91</span><span class="ansi-red-fg">9</span><span class="ansi-red-fg">.</span>    <span style="text-decoration:underline">1</span>919. 
+
+<span class="ansi-bright-black-fg"> 4</span> clarity.Q -<span style="text-decoration:underline" class="ansi-red-fg">1</span><span class="ansi-red-fg">90</span><span class="ansi-red-fg">9</span><span class="ansi-red-fg">.</span>    <span style="text-decoration:underline">1</span>909. 
+
+<span class="ansi-bright-black-fg"> 5</span> z         -<span style="text-decoration:underline" class="ansi-red-fg">1</span><span class="ansi-red-fg">67</span><span class="ansi-red-fg">2</span><span class="ansi-red-fg">.</span>    <span style="text-decoration:underline">1</span>672. 
+
+<span class="ansi-bright-black-fg"> 6</span> clarity.C   951.     951. 
+
+<span class="ansi-bright-black-fg"> 7</span> color.Q    -<span class="ansi-red-fg">646</span><span class="ansi-red-fg">.</span>     646. 
+
+<span class="ansi-bright-black-fg"> 8</span> cut.L       564.     564. 
+
+<span class="ansi-bright-black-fg"> 9</span> clarity^4  -<span class="ansi-red-fg">357</span><span class="ansi-red-fg">.</span>     357. 
+
+<span class="ansi-bright-black-fg">10</span> cut.Q      -<span class="ansi-red-fg">282</span><span class="ansi-red-fg">.</span>     282. 
+
+<span class="ansi-bright-black-fg">11</span> clarity^5   236.     236. 
+
+<span class="ansi-bright-black-fg">12</span> x          -<span class="ansi-red-fg">234</span><span class="ansi-red-fg">.</span>     234. 
+
+<span class="ansi-bright-black-fg">13</span> color.C    -<span class="ansi-red-fg">169</span><span class="ansi-red-fg">.</span>     169. 
+
+<span class="ansi-bright-black-fg">14</span> cut.C       129.     129. 
+
+<span class="ansi-bright-black-fg">15</span> y           124.     124. 
+
+<span class="ansi-bright-black-fg">16</span> color^5     -<span class="ansi-red-fg">89</span><span class="ansi-red-fg">.</span><span class="ansi-red-fg">9</span>     89.9
+
+<span class="ansi-bright-black-fg">17</span> clarity^7    88.9     88.9
+
+<span class="ansi-bright-black-fg">18</span> color^4      63.5     63.5
+
+<span class="ansi-bright-black-fg">19</span> color^6     -<span class="ansi-red-fg">30</span><span class="ansi-red-fg">.</span><span class="ansi-red-fg">1</span>     30.1
+
+<span class="ansi-bright-black-fg">20</span> table       -<span class="ansi-red-fg">27</span><span class="ansi-red-fg">.</span><span class="ansi-red-fg">9</span>     27.9
+
+<span class="ansi-bright-black-fg"># ℹ 3 more rows</span>
+</pre>
+</div>
+</div>
+</div>
+<div id="f3d6d075" class="cell" data-quarto-private-1="{&quot;key&quot;:&quot;vscode&quot;,&quot;value&quot;:{&quot;languageId&quot;:&quot;r&quot;}}" data-execution_count="74">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb42"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb42-1"><a href="#cb42-1" aria-hidden="true" tabindex="-1"></a><span class="fu">cat</span>(<span class="st">"</span><span class="sc">\n</span><span class="st">====== MODEL 4: price ~ carat + cut + color + clarity ======</span><span class="sc">\n</span><span class="st">"</span>)</span>
+<span id="cb42-2"><a href="#cb42-2" aria-hidden="true" tabindex="-1"></a>rank_m4 <span class="ot">&lt;-</span> <span class="fu">rank_betas</span>(model4)</span>
+<span id="cb42-3"><a href="#cb42-3" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(rank_m4, <span class="at">n =</span> <span class="dv">20</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<div class="ansi-escaped-output">
+<pre>====== MODEL 4: price ~ carat + cut + color + clarity ======
+
+<span class="ansi-bright-black-fg"># A tibble: 18 × 3</span>
+
+   term          beta abs_beta
+
+   <span style="font-style:italic" class="ansi-bright-black-fg">&lt;chr&gt;</span>        <span style="font-style:italic" class="ansi-bright-black-fg">&lt;dbl&gt;</span>    <span style="font-style:italic" class="ansi-bright-black-fg">&lt;dbl&gt;</span>
+
+<span class="ansi-bright-black-fg"> 1</span> carat      <span style="text-decoration:underline">8</span>873.    <span style="text-decoration:underline">8</span>873.  
+
+<span class="ansi-bright-black-fg"> 2</span> clarity.L  <span style="text-decoration:underline">4</span>185.    <span style="text-decoration:underline">4</span>185.  
+
+<span class="ansi-bright-black-fg"> 3</span> color.L   -<span style="text-decoration:underline" class="ansi-red-fg">1</span><span class="ansi-red-fg">86</span><span class="ansi-red-fg">7</span><span class="ansi-red-fg">.</span>    <span style="text-decoration:underline">1</span>867.  
+
+<span class="ansi-bright-black-fg"> 4</span> clarity.Q -<span style="text-decoration:underline" class="ansi-red-fg">1</span><span class="ansi-red-fg">81</span><span class="ansi-red-fg">1</span><span class="ansi-red-fg">.</span>    <span style="text-decoration:underline">1</span>811.  
+
+<span class="ansi-bright-black-fg"> 5</span> clarity.C   889.     889.  
+
+<span class="ansi-bright-black-fg"> 6</span> cut.L       685.     685.  
+
+<span class="ansi-bright-black-fg"> 7</span> color.Q    -<span class="ansi-red-fg">595</span><span class="ansi-red-fg">.</span>     595.  
+
+<span class="ansi-bright-black-fg"> 8</span> clarity^4  -<span class="ansi-red-fg">353</span><span class="ansi-red-fg">.</span>     353.  
+
+<span class="ansi-bright-black-fg"> 9</span> cut.Q      -<span class="ansi-red-fg">313</span><span class="ansi-red-fg">.</span>     313.  
+
+<span class="ansi-bright-black-fg">10</span> clarity^5   219.     219.  
+
+<span class="ansi-bright-black-fg">11</span> color.C    -<span class="ansi-red-fg">176</span><span class="ansi-red-fg">.</span>     176.  
+
+<span class="ansi-bright-black-fg">12</span> cut.C       159.     159.  
+
+<span class="ansi-bright-black-fg">13</span> clarity^7   110.     110.  
+
+<span class="ansi-bright-black-fg">14</span> color^5     -<span class="ansi-red-fg">77</span><span class="ansi-red-fg">.</span><span class="ansi-red-fg">3</span>     77.3 
+
+<span class="ansi-bright-black-fg">15</span> color^4      45.3     45.3 
+
+<span class="ansi-bright-black-fg">16</span> color^6     -<span class="ansi-red-fg">33</span><span class="ansi-red-fg">.</span><span class="ansi-red-fg">4</span>     33.4 
+
+<span class="ansi-bright-black-fg">17</span> cut^4        15.9     15.9 
+
+<span class="ansi-bright-black-fg">18</span> clarity^6     7.64     7.64
+</pre>
+</div>
+</div>
+</div>
+<div id="6b9cc9ee" class="cell" data-quarto-private-1="{&quot;key&quot;:&quot;vscode&quot;,&quot;value&quot;:{&quot;languageId&quot;:&quot;r&quot;}}" data-execution_count="77">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb43"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb43-1"><a href="#cb43-1" aria-hidden="true" tabindex="-1"></a>model_stats <span class="ot">&lt;-</span> <span class="cf">function</span>(model) {</span>
+<span id="cb43-2"><a href="#cb43-2" aria-hidden="true" tabindex="-1"></a>  s <span class="ot">&lt;-</span> <span class="fu">summary</span>(model)</span>
+<span id="cb43-3"><a href="#cb43-3" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb43-4"><a href="#cb43-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">list</span>(</span>
+<span id="cb43-5"><a href="#cb43-5" aria-hidden="true" tabindex="-1"></a>    <span class="at">t_tests =</span> s<span class="sc">$</span>coefficients,      <span class="co"># T-Tests der Regressionskoeffizienten</span></span>
+<span id="cb43-6"><a href="#cb43-6" aria-hidden="true" tabindex="-1"></a>    <span class="at">f_test =</span> s<span class="sc">$</span>fstatistic,         <span class="co"># F-Test des Gesamtmodells</span></span>
+<span id="cb43-7"><a href="#cb43-7" aria-hidden="true" tabindex="-1"></a>    <span class="at">r2 =</span> s<span class="sc">$</span>r.squared,              <span class="co"># R²</span></span>
+<span id="cb43-8"><a href="#cb43-8" aria-hidden="true" tabindex="-1"></a>    <span class="at">adj_r2 =</span> s<span class="sc">$</span>adj.r.squared,      <span class="co"># Adjusted R²</span></span>
+<span id="cb43-9"><a href="#cb43-9" aria-hidden="true" tabindex="-1"></a>    <span class="at">aic =</span> <span class="fu">AIC</span>(model)               <span class="co"># AIC</span></span>
+<span id="cb43-10"><a href="#cb43-10" aria-hidden="true" tabindex="-1"></a>  )</span>
+<span id="cb43-11"><a href="#cb43-11" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb43-12"><a href="#cb43-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb43-13"><a href="#cb43-13" aria-hidden="true" tabindex="-1"></a>stats_m1 <span class="ot">&lt;-</span> <span class="fu">model_stats</span>(model1)</span>
+<span id="cb43-14"><a href="#cb43-14" aria-hidden="true" tabindex="-1"></a>stats_m2 <span class="ot">&lt;-</span> <span class="fu">model_stats</span>(model2)</span>
+<span id="cb43-15"><a href="#cb43-15" aria-hidden="true" tabindex="-1"></a>stats_m3 <span class="ot">&lt;-</span> <span class="fu">model_stats</span>(model3)</span>
+<span id="cb43-16"><a href="#cb43-16" aria-hidden="true" tabindex="-1"></a>stats_m4 <span class="ot">&lt;-</span> <span class="fu">model_stats</span>(model4)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+</section>
+<section id="modelle-übersicht" class="level2">
+<h2 class="anchored" data-anchor-id="modelle-übersicht">Modelle Übersicht</h2>
+<div id="a30196aa" class="cell" data-quarto-private-1="{&quot;key&quot;:&quot;vscode&quot;,&quot;value&quot;:{&quot;languageId&quot;:&quot;r&quot;}}" data-execution_count="78">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb44"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb44-1"><a href="#cb44-1" aria-hidden="true" tabindex="-1"></a><span class="fu">cat</span>(<span class="st">"===== MODEL 1: price ~ carat + x + y + z =====</span><span class="sc">\n</span><span class="st">"</span>)</span>
+<span id="cb44-2"><a href="#cb44-2" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(stats_m1<span class="sc">$</span>t_tests)</span>
+<span id="cb44-3"><a href="#cb44-3" aria-hidden="true" tabindex="-1"></a><span class="fu">cat</span>(<span class="st">"</span><span class="sc">\n</span><span class="st">F-Test:</span><span class="sc">\n</span><span class="st">"</span>)</span>
+<span id="cb44-4"><a href="#cb44-4" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(stats_m1<span class="sc">$</span>f_test)</span>
+<span id="cb44-5"><a href="#cb44-5" aria-hidden="true" tabindex="-1"></a><span class="fu">cat</span>(<span class="st">"</span><span class="sc">\n</span><span class="st">R²:"</span>, stats_m1<span class="sc">$</span>r2, <span class="st">"| adj. R²:"</span>, stats_m1<span class="sc">$</span>adj_r2, <span class="st">"</span><span class="sc">\n</span><span class="st">"</span>)</span>
+<span id="cb44-6"><a href="#cb44-6" aria-hidden="true" tabindex="-1"></a><span class="fu">cat</span>(<span class="st">"AIC:"</span>, stats_m1<span class="sc">$</span>aic, <span class="st">"</span><span class="sc">\n\n</span><span class="st">"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>===== MODEL 1: price ~ carat + x + y + z =====
+              Estimate Std. Error    t value      Pr(&gt;|t|)
+(Intercept)  2985.0239  144.70666  20.628104  6.188344e-94
+carat       10897.2981   87.42329 124.649835  0.000000e+00
+x            -159.3904   61.35110  -2.598004  9.380984e-03
+y             230.7853   26.64268   8.662240  4.836798e-18
+z           -2303.9138   96.83812 -23.791393 4.781897e-124
+
+F-Test:
+   value    numdf    dendf 
+48470.75     4.00 32347.00 
+
+R²: 0.8570172 | adj. R²: 0.8569995 
+AIC: 565258.5 
+</code></pre>
+</div>
+</div>
+<div id="1a2ad9ae" class="cell" data-quarto-private-1="{&quot;key&quot;:&quot;vscode&quot;,&quot;value&quot;:{&quot;languageId&quot;:&quot;r&quot;}}" data-execution_count="79">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb46"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb46-1"><a href="#cb46-1" aria-hidden="true" tabindex="-1"></a><span class="fu">cat</span>(<span class="st">"===== MODEL 2: price ~ carat + depth + table + x + y + z =====</span><span class="sc">\n</span><span class="st">"</span>)</span>
+<span id="cb46-2"><a href="#cb46-2" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(stats_m2<span class="sc">$</span>t_tests)</span>
+<span id="cb46-3"><a href="#cb46-3" aria-hidden="true" tabindex="-1"></a><span class="fu">cat</span>(<span class="st">"</span><span class="sc">\n</span><span class="st">F-Test:</span><span class="sc">\n</span><span class="st">"</span>)</span>
+<span id="cb46-4"><a href="#cb46-4" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(stats_m2<span class="sc">$</span>f_test)</span>
+<span id="cb46-5"><a href="#cb46-5" aria-hidden="true" tabindex="-1"></a><span class="fu">cat</span>(<span class="st">"</span><span class="sc">\n</span><span class="st">R²:"</span>, stats_m2<span class="sc">$</span>r2, <span class="st">"| adj. R²:"</span>, stats_m2<span class="sc">$</span>adj_r2, <span class="st">"</span><span class="sc">\n</span><span class="st">"</span>)</span>
+<span id="cb46-6"><a href="#cb46-6" aria-hidden="true" tabindex="-1"></a><span class="fu">cat</span>(<span class="st">"AIC:"</span>, stats_m2<span class="sc">$</span>aic, <span class="st">"</span><span class="sc">\n\n</span><span class="st">"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>===== MODEL 2: price ~ carat + depth + table + x + y + z =====
+               Estimate  Std. Error    t value      Pr(&gt;|t|)
+(Intercept) 18969.91635 1067.222757  17.775030  2.386481e-70
+carat       10983.88100   86.490134 126.995768  0.000000e+00
+depth        -165.48857   16.577788  -9.982548  1.965059e-23
+table        -102.07337    3.929776 -25.974346 3.134854e-147
+x           -1056.06250  147.650368  -7.152454  8.704805e-13
+y              82.73102   31.996938   2.585592  9.725528e-03
+z            -603.43504  265.570568  -2.272221  2.307970e-02
+
+F-Test:
+   value    numdf    dendf 
+33183.98     6.00 32345.00 
+
+R²: 0.8602499 | adj. R²: 0.860224 
+AIC: 564522.6 
+</code></pre>
+</div>
+</div>
+<div id="c87511ed" class="cell" data-quarto-private-1="{&quot;key&quot;:&quot;vscode&quot;,&quot;value&quot;:{&quot;languageId&quot;:&quot;r&quot;}}" data-execution_count="80">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb48"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb48-1"><a href="#cb48-1" aria-hidden="true" tabindex="-1"></a><span class="fu">cat</span>(<span class="st">"===== MODEL 3: price ~ carat + cut + color + clarity + depth + table + x + y + z =====</span><span class="sc">\n</span><span class="st">"</span>)</span>
+<span id="cb48-2"><a href="#cb48-2" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(stats_m3<span class="sc">$</span>t_tests)</span>
+<span id="cb48-3"><a href="#cb48-3" aria-hidden="true" tabindex="-1"></a><span class="fu">cat</span>(<span class="st">"</span><span class="sc">\n</span><span class="st">F-Test:</span><span class="sc">\n</span><span class="st">"</span>)</span>
+<span id="cb48-4"><a href="#cb48-4" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(stats_m3<span class="sc">$</span>f_test)</span>
+<span id="cb48-5"><a href="#cb48-5" aria-hidden="true" tabindex="-1"></a><span class="fu">cat</span>(<span class="st">"</span><span class="sc">\n</span><span class="st">R²:"</span>, stats_m3<span class="sc">$</span>r2, <span class="st">"| adj. R²:"</span>, stats_m3<span class="sc">$</span>adj_r2, <span class="st">"</span><span class="sc">\n</span><span class="st">"</span>)</span>
+<span id="cb48-6"><a href="#cb48-6" aria-hidden="true" tabindex="-1"></a><span class="fu">cat</span>(<span class="st">"AIC:"</span>, stats_m3<span class="sc">$</span>aic, <span class="st">"</span><span class="sc">\n\n</span><span class="st">"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>===== MODEL 3: price ~ carat + cut + color + clarity + depth + table + x + y + z =====
+                Estimate Std. Error     t value      Pr(&gt;|t|)
+(Intercept)   733.233441  865.72393   0.8469599  3.970238e-01
+carat       11506.988282   67.08425 171.5303921  0.000000e+00
+cut.L         563.621509   29.17011  19.3218842  1.030497e-82
+cut.Q        -282.197593   23.32193 -12.1000948  1.247282e-33
+cut.C         128.756448   20.07481   6.4138322  1.438646e-10
+cut^4           8.740099   16.04369   0.5447685  5.859165e-01
+color.L     -1919.476699   22.36050 -85.8423094  0.000000e+00
+color.Q      -645.965520   20.36636 -31.7172795 1.948690e-217
+color.C      -168.955314   19.03331  -8.8768240  7.226225e-19
+color^4        63.527826   17.51511   3.6270292  2.871418e-04
+color^5       -89.869021   16.54150  -5.4329432  5.583169e-08
+color^6       -30.058165   15.01336  -2.0020940  4.528296e-02
+clarity.L    4059.828875   39.78496 102.0443196  0.000000e+00
+clarity.Q   -1909.338005   37.22085 -51.2975459  0.000000e+00
+clarity.C     950.775288   31.77767  29.9196010 4.871691e-194
+clarity^4    -356.870283   25.22880 -14.1453518  2.724116e-45
+clarity^5     236.162830   20.47981  11.5314944  1.051301e-30
+clarity^6      13.963781   17.76784   0.7859021  4.319306e-01
+clarity^7      88.870568   15.64585   5.6801360  1.357416e-08
+depth          26.384856   12.92447   2.0414656  4.121267e-02
+table         -27.932385    3.73007  -7.4884339  7.147542e-14
+x            -233.850990  113.90138  -2.0531006  4.007085e-02
+y             123.680190   24.34151   5.0810410  3.774592e-07
+z           -1671.695926  204.24006  -8.1849562  2.822999e-16
+
+F-Test:
+   value    numdf    dendf 
+16025.36    23.00 32328.00 
+
+R²: 0.9193637 | adj. R²: 0.9193063 
+AIC: 546766.1 
+</code></pre>
+</div>
+</div>
+<div id="5522eb7d" class="cell" data-quarto-private-1="{&quot;key&quot;:&quot;vscode&quot;,&quot;value&quot;:{&quot;languageId&quot;:&quot;r&quot;}}" data-execution_count="81">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb50"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb50-1"><a href="#cb50-1" aria-hidden="true" tabindex="-1"></a><span class="fu">cat</span>(<span class="st">"===== MODEL 4: price ~ carat + cut + color + clarity =====</span><span class="sc">\n</span><span class="st">"</span>)</span>
+<span id="cb50-2"><a href="#cb50-2" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(stats_m4<span class="sc">$</span>t_tests)</span>
+<span id="cb50-3"><a href="#cb50-3" aria-hidden="true" tabindex="-1"></a><span class="fu">cat</span>(<span class="st">"</span><span class="sc">\n</span><span class="st">F-Test:</span><span class="sc">\n</span><span class="st">"</span>)</span>
+<span id="cb50-4"><a href="#cb50-4" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(stats_m4<span class="sc">$</span>f_test)</span>
+<span id="cb50-5"><a href="#cb50-5" aria-hidden="true" tabindex="-1"></a><span class="fu">cat</span>(<span class="st">"</span><span class="sc">\n</span><span class="st">R²:"</span>, stats_m4<span class="sc">$</span>r2, <span class="st">"| adj. R²:"</span>, stats_m4<span class="sc">$</span>adj_r2, <span class="st">"</span><span class="sc">\n</span><span class="st">"</span>)</span>
+<span id="cb50-6"><a href="#cb50-6" aria-hidden="true" tabindex="-1"></a><span class="fu">cat</span>(<span class="st">"AIC:"</span>, stats_m4<span class="sc">$</span>aic, <span class="st">"</span><span class="sc">\n\n</span><span class="st">"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>===== MODEL 4: price ~ carat + cut + color + clarity =====
+                Estimate Std. Error      t value      Pr(&gt;|t|)
+(Intercept) -3681.260768   18.14629 -202.8658079  0.000000e+00
+carat        8872.838336   15.58298  569.3929250  0.000000e+00
+cut.L         684.630197   26.47861   25.8559705 6.366332e-146
+cut.Q        -313.066000   23.31054  -13.4302316  5.181292e-41
+cut.C         159.045941   20.15874    7.8896779  3.124677e-15
+cut^4          15.857643   16.11222    0.9841998  3.250247e-01
+color.L     -1866.918332   22.87299  -81.6210937  0.000000e+00
+color.Q      -595.198208   20.84346  -28.5556318 3.801549e-177
+color.C      -175.927479   19.51473   -9.0151129  2.072136e-19
+color^4        45.284737   17.95260    2.5224616  1.165843e-02
+color^5       -77.251384   16.96143   -4.5545335  5.269345e-06
+color^6       -33.356088   15.39649   -2.1664737  3.028229e-02
+clarity.L    4185.343272   40.59732  103.0940677  0.000000e+00
+clarity.Q   -1810.774959   38.08909  -47.5405142  0.000000e+00
+clarity.C     888.682975   32.54087   27.3097496 2.271714e-162
+clarity^4    -352.603794   25.87413  -13.6276588  3.587074e-42
+clarity^5     218.802968   20.99081   10.4237486  2.119606e-25
+clarity^6       7.636444   18.22090    0.4191036  6.751432e-01
+clarity^7     109.825386   16.03671    6.8483751  7.602808e-12
+
+F-Test:
+   value    numdf    dendf 
+19377.21    18.00 32333.00 
+
+R²: 0.9151638 | adj. R²: 0.9151166 
+AIC: 548398.7 
+</code></pre>
+</div>
+</div>
+</section>
+<section id="rmse" class="level2">
+<h2 class="anchored" data-anchor-id="rmse">RMSE</h2>
+<div id="3acadd29" class="cell" data-quarto-private-1="{&quot;key&quot;:&quot;vscode&quot;,&quot;value&quot;:{&quot;languageId&quot;:&quot;r&quot;}}" data-execution_count="82">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb52"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb52-1"><a href="#cb52-1" aria-hidden="true" tabindex="-1"></a><span class="do">## RMSE</span></span>
+<span id="cb52-2"><a href="#cb52-2" aria-hidden="true" tabindex="-1"></a>rmse_model <span class="ot">&lt;-</span> <span class="cf">function</span>(model, train_data, val_data) {</span>
+<span id="cb52-3"><a href="#cb52-3" aria-hidden="true" tabindex="-1"></a>  pred_train <span class="ot">&lt;-</span> <span class="fu">predict</span>(model, train_data)</span>
+<span id="cb52-4"><a href="#cb52-4" aria-hidden="true" tabindex="-1"></a>  pred_val   <span class="ot">&lt;-</span> <span class="fu">predict</span>(model, val_data)</span>
+<span id="cb52-5"><a href="#cb52-5" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb52-6"><a href="#cb52-6" aria-hidden="true" tabindex="-1"></a>  rmse_train <span class="ot">&lt;-</span> <span class="fu">rmse</span>(train_data<span class="sc">$</span>price, pred_train)</span>
+<span id="cb52-7"><a href="#cb52-7" aria-hidden="true" tabindex="-1"></a>  rmse_val   <span class="ot">&lt;-</span> <span class="fu">rmse</span>(val_data<span class="sc">$</span>price, pred_val)</span>
+<span id="cb52-8"><a href="#cb52-8" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb52-9"><a href="#cb52-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">return</span>(<span class="fu">list</span>(<span class="at">train_rmse =</span> rmse_train, <span class="at">val_rmse =</span> rmse_val))</span>
+<span id="cb52-10"><a href="#cb52-10" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb52-11"><a href="#cb52-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb52-12"><a href="#cb52-12" aria-hidden="true" tabindex="-1"></a>rmse_m1 <span class="ot">&lt;-</span> <span class="fu">rmse_model</span>(model1, train_set, validation_set)</span>
+<span id="cb52-13"><a href="#cb52-13" aria-hidden="true" tabindex="-1"></a>rmse_m2 <span class="ot">&lt;-</span> <span class="fu">rmse_model</span>(model2, train_set, validation_set)</span>
+<span id="cb52-14"><a href="#cb52-14" aria-hidden="true" tabindex="-1"></a>rmse_m3 <span class="ot">&lt;-</span> <span class="fu">rmse_model</span>(model3, train_set, validation_set)</span>
+<span id="cb52-15"><a href="#cb52-15" aria-hidden="true" tabindex="-1"></a>rmse_m4 <span class="ot">&lt;-</span> <span class="fu">rmse_model</span>(model4, train_set, validation_set)</span>
+<span id="cb52-16"><a href="#cb52-16" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb52-17"><a href="#cb52-17" aria-hidden="true" tabindex="-1"></a><span class="fu">cat</span>(<span class="st">"===== MODEL 1 =====</span><span class="sc">\n</span><span class="st">"</span>)</span>
+<span id="cb52-18"><a href="#cb52-18" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(rmse_m1)</span>
+<span id="cb52-19"><a href="#cb52-19" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb52-20"><a href="#cb52-20" aria-hidden="true" tabindex="-1"></a><span class="fu">cat</span>(<span class="st">"</span><span class="sc">\n</span><span class="st">===== MODEL 2 =====</span><span class="sc">\n</span><span class="st">"</span>)</span>
+<span id="cb52-21"><a href="#cb52-21" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(rmse_m2)</span>
+<span id="cb52-22"><a href="#cb52-22" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb52-23"><a href="#cb52-23" aria-hidden="true" tabindex="-1"></a><span class="fu">cat</span>(<span class="st">"</span><span class="sc">\n</span><span class="st">===== MODEL 3 =====</span><span class="sc">\n</span><span class="st">"</span>)</span>
+<span id="cb52-24"><a href="#cb52-24" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(rmse_m3)</span>
+<span id="cb52-25"><a href="#cb52-25" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb52-26"><a href="#cb52-26" aria-hidden="true" tabindex="-1"></a><span class="fu">cat</span>(<span class="st">"</span><span class="sc">\n</span><span class="st">===== MODEL 4 =====</span><span class="sc">\n</span><span class="st">"</span>)</span>
+<span id="cb52-27"><a href="#cb52-27" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(rmse_m4)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>===== MODEL 1 =====
+$train_rmse
+[1] 1505.595
+
+$val_rmse
+[1] 1518.872
+
+
+===== MODEL 2 =====
+$train_rmse
+[1] 1488.477
+
+$val_rmse
+[1] 1489.194
+
+
+===== MODEL 3 =====
+$train_rmse
+[1] 1130.658
+
+$val_rmse
+[1] 1130.535
+
+
+===== MODEL 4 =====
+$train_rmse
+[1] 1159.729
+
+$val_rmse
+[1] 1146.878
+</code></pre>
+</div>
+</div>
+<p>Model 3 is has the best RMSE Score, followed closely by Model 4, for the next plots we will use the best Model (3).</p>
+<div id="6297ff87" class="cell" data-quarto-private-1="{&quot;key&quot;:&quot;vscode&quot;,&quot;value&quot;:{&quot;languageId&quot;:&quot;r&quot;}}" data-execution_count="84">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb54"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb54-1"><a href="#cb54-1" aria-hidden="true" tabindex="-1"></a>res <span class="ot">&lt;-</span> <span class="fu">residuals</span>(model3)</span>
+<span id="cb54-2"><a href="#cb54-2" aria-hidden="true" tabindex="-1"></a>fitted_vals <span class="ot">&lt;-</span> <span class="fu">fitted</span>(model3)</span>
+<span id="cb54-3"><a href="#cb54-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb54-4"><a href="#cb54-4" aria-hidden="true" tabindex="-1"></a><span class="co"># Residuen vs. Fitted Plot (Homoskedastizität)</span></span>
+<span id="cb54-5"><a href="#cb54-5" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(fitted_vals, res,</span>
+<span id="cb54-6"><a href="#cb54-6" aria-hidden="true" tabindex="-1"></a>     <span class="at">main =</span> <span class="st">"Residuals vs Fitted"</span>,</span>
+<span id="cb54-7"><a href="#cb54-7" aria-hidden="true" tabindex="-1"></a>     <span class="at">xlab =</span> <span class="st">"Fitted Values"</span>,</span>
+<span id="cb54-8"><a href="#cb54-8" aria-hidden="true" tabindex="-1"></a>     <span class="at">ylab =</span> <span class="st">"Residuals"</span>,</span>
+<span id="cb54-9"><a href="#cb54-9" aria-hidden="true" tabindex="-1"></a>     <span class="at">pch =</span> <span class="dv">20</span>, <span class="at">col =</span> <span class="fu">rgb</span>(<span class="dv">0</span>,<span class="dv">0</span>,<span class="dv">0</span>,<span class="fl">0.3</span>))</span>
+<span id="cb54-10"><a href="#cb54-10" aria-hidden="true" tabindex="-1"></a><span class="fu">abline</span>(<span class="at">h =</span> <span class="dv">0</span>, <span class="at">col =</span> <span class="st">"red"</span>, <span class="at">lwd =</span> <span class="dv">2</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="project_regression_files/figure-html/cell-42-output-1.png" width="600" height="240" class="figure-img"></p>
+</figure>
+</div>
+</div>
+</div>
+<div id="c4cd198b" class="cell" data-quarto-private-1="{&quot;key&quot;:&quot;vscode&quot;,&quot;value&quot;:{&quot;languageId&quot;:&quot;r&quot;}}" data-execution_count="85">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb55"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb55-1"><a href="#cb55-1" aria-hidden="true" tabindex="-1"></a><span class="fu">qqnorm</span>(res, <span class="at">main =</span> <span class="st">"QQ-Plot der Residuen"</span>, <span class="at">pch =</span> <span class="dv">20</span>, <span class="at">col =</span> <span class="fu">rgb</span>(<span class="dv">0</span>,<span class="dv">0</span>,<span class="dv">0</span>,<span class="fl">0.3</span>))</span>
+<span id="cb55-2"><a href="#cb55-2" aria-hidden="true" tabindex="-1"></a><span class="fu">qqline</span>(res, <span class="at">col =</span> <span class="st">"red"</span>, <span class="at">lwd =</span> <span class="dv">2</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="project_regression_files/figure-html/cell-43-output-1.png" width="600" height="240" class="figure-img"></p>
+</figure>
+</div>
+</div>
+</div>
+<div id="5a4800aa" class="cell" data-quarto-private-1="{&quot;key&quot;:&quot;vscode&quot;,&quot;value&quot;:{&quot;languageId&quot;:&quot;r&quot;}}" data-execution_count="88">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb56"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb56-1"><a href="#cb56-1" aria-hidden="true" tabindex="-1"></a><span class="fu">hist</span>(res, <span class="at">breaks =</span> <span class="dv">50</span>,</span>
+<span id="cb56-2"><a href="#cb56-2" aria-hidden="true" tabindex="-1"></a>     <span class="at">main =</span> <span class="st">"Histogramm der Residuen"</span>,</span>
+<span id="cb56-3"><a href="#cb56-3" aria-hidden="true" tabindex="-1"></a>     <span class="at">xlab =</span> <span class="st">"Residuen"</span>,</span>
+<span id="cb56-4"><a href="#cb56-4" aria-hidden="true" tabindex="-1"></a>     <span class="at">col =</span> <span class="st">"lightblue"</span>, <span class="at">border =</span> <span class="st">"white"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="project_regression_files/figure-html/cell-44-output-1.png" width="600" height="240" class="figure-img"></p>
+</figure>
+</div>
+</div>
+</div>
+<div id="a02f8c46" class="cell" data-quarto-private-1="{&quot;key&quot;:&quot;vscode&quot;,&quot;value&quot;:{&quot;languageId&quot;:&quot;r&quot;}}" data-execution_count="96">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb57"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb57-1"><a href="#cb57-1" aria-hidden="true" tabindex="-1"></a>std_res <span class="ot">&lt;-</span> <span class="fu">studres</span>(model3)</span>
+<span id="cb57-2"><a href="#cb57-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb57-3"><a href="#cb57-3" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(std_res,</span>
+<span id="cb57-4"><a href="#cb57-4" aria-hidden="true" tabindex="-1"></a>     <span class="at">main =</span> <span class="st">"Standardisierte Residuen"</span>,</span>
+<span id="cb57-5"><a href="#cb57-5" aria-hidden="true" tabindex="-1"></a>     <span class="at">ylab =</span> <span class="st">"Standardisierte Residuen"</span>,</span>
+<span id="cb57-6"><a href="#cb57-6" aria-hidden="true" tabindex="-1"></a>     <span class="at">xlab =</span> <span class="st">"Index"</span>,</span>
+<span id="cb57-7"><a href="#cb57-7" aria-hidden="true" tabindex="-1"></a>     <span class="at">pch =</span> <span class="dv">20</span>, <span class="at">col =</span> <span class="fu">rgb</span>(<span class="dv">0</span>,<span class="dv">0</span>,<span class="dv">0</span>,<span class="fl">0.3</span>))</span>
+<span id="cb57-8"><a href="#cb57-8" aria-hidden="true" tabindex="-1"></a><span class="fu">abline</span>(<span class="at">h =</span> <span class="fu">c</span>(<span class="sc">-</span><span class="dv">3</span>, <span class="dv">3</span>), <span class="at">col =</span> <span class="st">"red"</span>, <span class="at">lwd =</span> <span class="dv">2</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="project_regression_files/figure-html/cell-45-output-1.png" width="600" height="240" class="figure-img"></p>
+</figure>
+</div>
+</div>
+</div>
+</section>
+<section id="prognose-am-test-set" class="level2">
+<h2 class="anchored" data-anchor-id="prognose-am-test-set">Prognose am Test-Set</h2>
+<div id="f8e868fd" class="cell" data-quarto-private-1="{&quot;key&quot;:&quot;vscode&quot;,&quot;value&quot;:{&quot;languageId&quot;:&quot;r&quot;}}" data-execution_count="97">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb58"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb58-1"><a href="#cb58-1" aria-hidden="true" tabindex="-1"></a><span class="co"># ---- Prognose für das Test-Set ----</span></span>
+<span id="cb58-2"><a href="#cb58-2" aria-hidden="true" tabindex="-1"></a>pred_test <span class="ot">&lt;-</span> <span class="fu">predict</span>(model3, test_set)</span>
+<span id="cb58-3"><a href="#cb58-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb58-4"><a href="#cb58-4" aria-hidden="true" tabindex="-1"></a><span class="co"># ---- RMSE berechnen ----</span></span>
+<span id="cb58-5"><a href="#cb58-5" aria-hidden="true" tabindex="-1"></a>rmse_test <span class="ot">&lt;-</span> <span class="fu">rmse</span>(test_set<span class="sc">$</span>price, pred_test)</span>
+<span id="cb58-6"><a href="#cb58-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb58-7"><a href="#cb58-7" aria-hidden="true" tabindex="-1"></a><span class="fu">cat</span>(<span class="st">"RMSE Test-Set (Modell 3):"</span>, rmse_test, <span class="st">"</span><span class="sc">\n</span><span class="st">"</span>)</span>
+<span id="cb58-8"><a href="#cb58-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb58-9"><a href="#cb58-9" aria-hidden="true" tabindex="-1"></a>rmse_test_all <span class="ot">&lt;-</span> <span class="cf">function</span>(model, name) {</span>
+<span id="cb58-10"><a href="#cb58-10" aria-hidden="true" tabindex="-1"></a>  pred <span class="ot">&lt;-</span> <span class="fu">predict</span>(model, test_set)</span>
+<span id="cb58-11"><a href="#cb58-11" aria-hidden="true" tabindex="-1"></a>  val <span class="ot">&lt;-</span> <span class="fu">rmse</span>(test_set<span class="sc">$</span>price, pred)</span>
+<span id="cb58-12"><a href="#cb58-12" aria-hidden="true" tabindex="-1"></a>  <span class="fu">cat</span>(name, <span class="st">": "</span>, val, <span class="st">"</span><span class="sc">\n</span><span class="st">"</span>)</span>
+<span id="cb58-13"><a href="#cb58-13" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb58-14"><a href="#cb58-14" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb58-15"><a href="#cb58-15" aria-hidden="true" tabindex="-1"></a><span class="fu">rmse_test_all</span>(model1, <span class="st">"Model 1"</span>)</span>
+<span id="cb58-16"><a href="#cb58-16" aria-hidden="true" tabindex="-1"></a><span class="fu">rmse_test_all</span>(model2, <span class="st">"Model 2"</span>)</span>
+<span id="cb58-17"><a href="#cb58-17" aria-hidden="true" tabindex="-1"></a><span class="fu">rmse_test_all</span>(model3, <span class="st">"Model 3"</span>)</span>
+<span id="cb58-18"><a href="#cb58-18" aria-hidden="true" tabindex="-1"></a><span class="fu">rmse_test_all</span>(model4, <span class="st">"Model 4"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>RMSE Test-Set (Modell 3): 1258.175 
+Model 1 :  1704.629 
+Model 2 :  1559.429 
+Model 3 :  1258.175 
+Model 4 :  1180.247 </code></pre>
+</div>
+</div>
+<p>Hier zeigt sich, dass Modell 4 im Gegensatz zu vorher auf den Testdaten besser abschneidet als Modell 3. Das könnte daran liegen, dass Modell 3 mehr Variablen beinhaltet und somit overfittet.</p>
+</section>
+</section>
+
+</main>
+<!-- /main column -->
+<script id="quarto-html-after-body" type="application/javascript">
+  window.document.addEventListener("DOMContentLoaded", function (event) {
+    const icon = "";
+    const anchorJS = new window.AnchorJS();
+    anchorJS.options = {
+      placement: 'right',
+      icon: icon
+    };
+    anchorJS.add('.anchored');
+    const isCodeAnnotation = (el) => {
+      for (const clz of el.classList) {
+        if (clz.startsWith('code-annotation-')) {                     
+          return true;
+        }
+      }
+      return false;
+    }
+    const onCopySuccess = function(e) {
+      // button target
+      const button = e.trigger;
+      // don't keep focus
+      button.blur();
+      // flash "checked"
+      button.classList.add('code-copy-button-checked');
+      var currentTitle = button.getAttribute("title");
+      button.setAttribute("title", "Copied!");
+      let tooltip;
+      if (window.bootstrap) {
+        button.setAttribute("data-bs-toggle", "tooltip");
+        button.setAttribute("data-bs-placement", "left");
+        button.setAttribute("data-bs-title", "Copied!");
+        tooltip = new bootstrap.Tooltip(button, 
+          { trigger: "manual", 
+            customClass: "code-copy-button-tooltip",
+            offset: [0, -8]});
+        tooltip.show();    
+      }
+      setTimeout(function() {
+        if (tooltip) {
+          tooltip.hide();
+          button.removeAttribute("data-bs-title");
+          button.removeAttribute("data-bs-toggle");
+          button.removeAttribute("data-bs-placement");
+        }
+        button.setAttribute("title", currentTitle);
+        button.classList.remove('code-copy-button-checked');
+      }, 1000);
+      // clear code selection
+      e.clearSelection();
+    }
+    const getTextToCopy = function(trigger) {
+      const outerScaffold = trigger.parentElement.cloneNode(true);
+      const codeEl = outerScaffold.querySelector('code');
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+    const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+      text: getTextToCopy
+    });
+    clipboard.on('success', onCopySuccess);
+    if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+      const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+        text: getTextToCopy,
+        container: window.document.getElementById('quarto-embedded-source-code-modal')
+      });
+      clipboardModal.on('success', onCopySuccess);
+    }
+      var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+      var mailtoRegex = new RegExp(/^mailto:/);
+        var filterRegex = new RegExp('/' + window.location.host + '/');
+      var isInternal = (href) => {
+          return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+      }
+      // Inspect non-navigation links and adorn them if external
+     var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+      for (var i=0; i<links.length; i++) {
+        const link = links[i];
+        if (!isInternal(link.href)) {
+          // undo the damage that might have been done by quarto-nav.js in the case of
+          // links that we want to consider external
+          if (link.dataset.originalHref !== undefined) {
+            link.href = link.dataset.originalHref;
+          }
+        }
+      }
+    function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+      const config = {
+        allowHTML: true,
+        maxWidth: 500,
+        delay: 100,
+        arrow: false,
+        appendTo: function(el) {
+            return el.parentElement;
+        },
+        interactive: true,
+        interactiveBorder: 10,
+        theme: 'quarto',
+        placement: 'bottom-start',
+      };
+      if (contentFn) {
+        config.content = contentFn;
+      }
+      if (onTriggerFn) {
+        config.onTrigger = onTriggerFn;
+      }
+      if (onUntriggerFn) {
+        config.onUntrigger = onUntriggerFn;
+      }
+      window.tippy(el, config); 
+    }
+    const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+    for (var i=0; i<noterefs.length; i++) {
+      const ref = noterefs[i];
+      tippyHover(ref, function() {
+        // use id or data attribute instead here
+        let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+        try { href = new URL(href).hash; } catch {}
+        const id = href.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note) {
+          return note.innerHTML;
+        } else {
+          return "";
+        }
+      });
+    }
+    const xrefs = window.document.querySelectorAll('a.quarto-xref');
+    const processXRef = (id, note) => {
+      // Strip column container classes
+      const stripColumnClz = (el) => {
+        el.classList.remove("page-full", "page-columns");
+        if (el.children) {
+          for (const child of el.children) {
+            stripColumnClz(child);
+          }
+        }
+      }
+      stripColumnClz(note)
+      if (id === null || id.startsWith('sec-')) {
+        // Special case sections, only their first couple elements
+        const container = document.createElement("div");
+        if (note.children && note.children.length > 2) {
+          container.appendChild(note.children[0].cloneNode(true));
+          for (let i = 1; i < note.children.length; i++) {
+            const child = note.children[i];
+            if (child.tagName === "P" && child.innerText === "") {
+              continue;
+            } else {
+              container.appendChild(child.cloneNode(true));
+              break;
+            }
+          }
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(container);
+          }
+          return container.innerHTML
+        } else {
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(note);
+          }
+          return note.innerHTML;
+        }
+      } else {
+        // Remove any anchor links if they are present
+        const anchorLink = note.querySelector('a.anchorjs-link');
+        if (anchorLink) {
+          anchorLink.remove();
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        if (note.classList.contains("callout")) {
+          return note.outerHTML;
+        } else {
+          return note.innerHTML;
+        }
+      }
+    }
+    for (var i=0; i<xrefs.length; i++) {
+      const xref = xrefs[i];
+      tippyHover(xref, undefined, function(instance) {
+        instance.disable();
+        let url = xref.getAttribute('href');
+        let hash = undefined; 
+        if (url.startsWith('#')) {
+          hash = url;
+        } else {
+          try { hash = new URL(url).hash; } catch {}
+        }
+        if (hash) {
+          const id = hash.replace(/^#\/?/, "");
+          const note = window.document.getElementById(id);
+          if (note !== null) {
+            try {
+              const html = processXRef(id, note.cloneNode(true));
+              instance.setContent(html);
+            } finally {
+              instance.enable();
+              instance.show();
+            }
+          } else {
+            // See if we can fetch this
+            fetch(url.split('#')[0])
+            .then(res => res.text())
+            .then(html => {
+              const parser = new DOMParser();
+              const htmlDoc = parser.parseFromString(html, "text/html");
+              const note = htmlDoc.getElementById(id);
+              if (note !== null) {
+                const html = processXRef(id, note);
+                instance.setContent(html);
+              } 
+            }).finally(() => {
+              instance.enable();
+              instance.show();
+            });
+          }
+        } else {
+          // See if we can fetch a full url (with no hash to target)
+          // This is a special case and we should probably do some content thinning / targeting
+          fetch(url)
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.querySelector('main.content');
+            if (note !== null) {
+              // This should only happen for chapter cross references
+              // (since there is no id in the URL)
+              // remove the first header
+              if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+                note.children[0].remove();
+              }
+              const html = processXRef(null, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      }, function(instance) {
+      });
+    }
+        let selectedAnnoteEl;
+        const selectorForAnnotation = ( cell, annotation) => {
+          let cellAttr = 'data-code-cell="' + cell + '"';
+          let lineAttr = 'data-code-annotation="' +  annotation + '"';
+          const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+          return selector;
+        }
+        const selectCodeLines = (annoteEl) => {
+          const doc = window.document;
+          const targetCell = annoteEl.getAttribute("data-target-cell");
+          const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+          const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+          const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+          const lineIds = lines.map((line) => {
+            return targetCell + "-" + line;
+          })
+          let top = null;
+          let height = null;
+          let parent = null;
+          if (lineIds.length > 0) {
+              //compute the position of the single el (top and bottom and make a div)
+              const el = window.document.getElementById(lineIds[0]);
+              top = el.offsetTop;
+              height = el.offsetHeight;
+              parent = el.parentElement.parentElement;
+            if (lineIds.length > 1) {
+              const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+              const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+              height = bottom - top;
+            }
+            if (top !== null && height !== null && parent !== null) {
+              // cook up a div (if necessary) and position it 
+              let div = window.document.getElementById("code-annotation-line-highlight");
+              if (div === null) {
+                div = window.document.createElement("div");
+                div.setAttribute("id", "code-annotation-line-highlight");
+                div.style.position = 'absolute';
+                parent.appendChild(div);
+              }
+              div.style.top = top - 2 + "px";
+              div.style.height = height + 4 + "px";
+              div.style.left = 0;
+              let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+              if (gutterDiv === null) {
+                gutterDiv = window.document.createElement("div");
+                gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+                gutterDiv.style.position = 'absolute';
+                const codeCell = window.document.getElementById(targetCell);
+                const gutter = codeCell.querySelector('.code-annotation-gutter');
+                gutter.appendChild(gutterDiv);
+              }
+              gutterDiv.style.top = top - 2 + "px";
+              gutterDiv.style.height = height + 4 + "px";
+            }
+            selectedAnnoteEl = annoteEl;
+          }
+        };
+        const unselectCodeLines = () => {
+          const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+          elementsIds.forEach((elId) => {
+            const div = window.document.getElementById(elId);
+            if (div) {
+              div.remove();
+            }
+          });
+          selectedAnnoteEl = undefined;
+        };
+          // Handle positioning of the toggle
+      window.addEventListener(
+        "resize",
+        throttle(() => {
+          elRect = undefined;
+          if (selectedAnnoteEl) {
+            selectCodeLines(selectedAnnoteEl);
+          }
+        }, 10)
+      );
+      function throttle(fn, ms) {
+      let throttle = false;
+      let timer;
+        return (...args) => {
+          if(!throttle) { // first call gets through
+              fn.apply(this, args);
+              throttle = true;
+          } else { // all the others get throttled
+              if(timer) clearTimeout(timer); // cancel #2
+              timer = setTimeout(() => {
+                fn.apply(this, args);
+                timer = throttle = false;
+              }, ms);
+          }
+        };
+      }
+        // Attach click handler to the DT
+        const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+        for (const annoteDlNode of annoteDls) {
+          annoteDlNode.addEventListener('click', (event) => {
+            const clickedEl = event.target;
+            if (clickedEl !== selectedAnnoteEl) {
+              unselectCodeLines();
+              const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+              if (activeEl) {
+                activeEl.classList.remove('code-annotation-active');
+              }
+              selectCodeLines(clickedEl);
+              clickedEl.classList.add('code-annotation-active');
+            } else {
+              // Unselect the line
+              unselectCodeLines();
+              clickedEl.classList.remove('code-annotation-active');
+            }
+          });
+        }
+    const findCites = (el) => {
+      const parentEl = el.parentElement;
+      if (parentEl) {
+        const cites = parentEl.dataset.cites;
+        if (cites) {
+          return {
+            el,
+            cites: cites.split(' ')
+          };
+        } else {
+          return findCites(el.parentElement)
+        }
+      } else {
+        return undefined;
+      }
+    };
+    var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+    for (var i=0; i<bibliorefs.length; i++) {
+      const ref = bibliorefs[i];
+      const citeInfo = findCites(ref);
+      if (citeInfo) {
+        tippyHover(citeInfo.el, function() {
+          var popup = window.document.createElement('div');
+          citeInfo.cites.forEach(function(cite) {
+            var citeDiv = window.document.createElement('div');
+            citeDiv.classList.add('hanging-indent');
+            citeDiv.classList.add('csl-entry');
+            var biblioDiv = window.document.getElementById('ref-' + cite);
+            if (biblioDiv) {
+              citeDiv.innerHTML = biblioDiv.innerHTML;
+            }
+            popup.appendChild(citeDiv);
+          });
+          return popup.innerHTML;
+        });
+      }
+    }
+  });
+  </script>
+</div> <!-- /content -->
+
+
+
+
+</body></html>
