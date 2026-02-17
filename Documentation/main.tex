@@ -1,0 +1,231 @@
+\documentclass[12pt,a4paper,ngerman]{article}
+\usepackage[utf8]{inputenc}
+
+%Wird nicht mehr benötigt damit Umlaute im PDF richtig angezeigt werden
+\usepackage[T1]{fontenc}	
+\usepackage[table]{xcolor} % enable named colors
+\usepackage{soul}          % for highlighting
+\usepackage{hyperref}      % for clickable links
+\usepackage{url}
+
+% Oder besser für klickbare Links:
+\usepackage[hidelinks]{hyperref}
+% define highlight color (optional)
+\definecolor{lightyellow}{RGB}{255, 255, 150}
+%Wird fürs Anzeigen von Grafiken benötigt
+\usepackage{graphicx}
+
+%Wird benötigt damit Tabellenbeschriftung auf Deutsch
+\usepackage[ngerman]{babel} 
+
+% verwendet für subfigure Umgebungen
+\usepackage{subcaption}
+  
+% verwendet für todo notes (\todo)
+\usepackage[colorinlistoftodos]{todonotes}
+
+%Package für Listing (code listing - Umgebung "lstlisting")
+\usepackage{listings}
+\usepackage[most]{tcolorbox}
+%Packages für Quellenverzeichnis
+% Package für \url Befehl
+% Package-Abhängigkeit für \appto Befehl (wird für den nächsten Kommando (UrlBreaks) benötigt)
+\usepackage{etoolbox}
+%\do\? == erlaubtes Zeichen, an dem ein Zeilenumbruch innerhalb der URL stattfinden darf (auch mehrere \do\? erlaubt, z.B. \do\a\do\b\do\c...)
+\appto\UrlBreaks{\do\-}
+%Für Bullet Listen mit Buchstaben als Aufzählung
+\usepackage{enumitem}
+%Für bibliothek
+
+
+
+
+%wird für autoref benötigt, andererseits erstellt es im pdf klickbare Referenzen
+%\usepackage{hyperref}
+%wird für cref benötigt
+%\usepackage[ngerman]{cleveref}
+
+%eventuell benötigte Pakete
+
+ % Das Paket wrapfig ermöglicht es von Schrift umflossene Bilder und Tabellen
+% \usepackage{wrapfig}
+
+
+% bessere Möglichkeiten in die Platzierung von Abbildungen, etc. einzugreifen
+% \usepackage{float}
+
+% Abstand zwischen zwei Absätzen kontrollieren 
+% \usepackage{parskip}
+
+% konfiguriert Parameter des hyperref packages, so dass Linkfarben angepasst werden - muss die parameterlose Variante des Befehls (\usepackage{hyperref}) ersetzen
+%\usepackage[colorlinks=true, urlcolor=blue, linkcolor=black]{hyperref}
+
+
+
+
+%Metadaten
+% werden verwendet, wenn z.B. für das Titelblatt/Deckblatt der Befehl \maketitle verwendet wird
+\title{Template Laborprotokoll Quellenverzeichnis WS 2022}
+\author{Erwin Eliaß}
+\date{\today} %{30.09.2022}
+
+
+%Commandodefinition
+% Defines a new command for the horizontal lines, change thickness here
+% \newcommand{\HRule}{\rule{\linewidth}{0.5mm}} 
+
+%Seitenränder und Druckbereich sowie Kopf- und Fußzeile definieren
+\setlength\paperwidth{20.999cm}
+\setlength\paperheight{29.699cm}
+\setlength\voffset{-2cm}
+\setlength\hoffset{-1cm}
+\setlength\headheight{3.5cm}
+\setlength\headsep{0.5cm}
+\setlength\footskip{1.131cm}
+\setlength\textheight{22cm}
+\setlength\textwidth{16cm}
+\setlength {\marginparwidth }{2cm} %Damit keine Warnung bei den Todo's kommt
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% Kopfzeile und Fußzeile definieren
+
+\usepackage{fancyhdr}
+\pagestyle{fancy} %eigener Seitenstil
+\fancyhf{} %alle Kopf und Fußzeilenfelder bereinigen
+\fancyhead[L]{Informatik}
+\fancyhead[R]{\includegraphics[height=2.5cm]{FHWN_horizontal_ohne_claim}}
+\renewcommand{\headrulewidth}{0.5pt} %obere Trennlinie
+
+\rfoot{Seite \thepage}
+%\renewcommand{\footrulewidth}{0.0pt} %untere Trennlinie definieren
+
+\pagenumbering{Roman}
+
+%%%%%%%%%%%%%%%%%%%%%%%%% Inhaltsverzeichnis Formatierung definieren
+\usepackage{tocloft}
+\cftsetindents{section}{0em}{3em}
+\cftsetindents{subsection}{0em}{3em}
+\cftsetindents{subsubsection}{0em}{3em}
+
+\setcounter{tocdepth}{4} %Damit Inhaltsverzeichnis bis zur 4 Ebene
+\renewcommand\thesection{\arabic{section}} %Damit die Nummerierung mit 1 beginnt, vgl.: \roman{section}
+
+\setcounter{secnumdepth}{3} %Damit Nummerierung bis zur Ebene 3 geht
+
+
+%\setlength{\parindent}{4em}
+%\setlength{\parskip}{1em}
+
+\newtcolorbox{llm}[1][]{
+  colback=blue!5!white,
+  colframe=blue!60!black,
+  sharp corners,
+  left=2mm,right=2mm,top=1mm,bottom=1mm,
+  width=.9\linewidth,
+  #1
+}
+
+\newtcolorbox{user}[1][]{
+  colback=green!5!white,
+  colframe=green!60!black,
+  sharp corners,
+  left=2mm,right=2mm,top=1mm,bottom=1mm,
+  width=.8\linewidth,
+  #1
+}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%Start vom eigentlichen Dokument / Schriftstück 
+\begin{document}
+
+
+\include{Dokumente/Deckblatt}
+
+\newpage
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% Ende Deckblatt
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% Aktivieren der verschiedenen Verzeichnisse
+% wobei Quell- und Literaturverzeichnis sich am Ende des Dokumentes befinden.
+
+\tableofcontents\thispagestyle{fancy}
+\clearpage
+%\listoffigures\thispagestyle{fancy}
+%\clearpage
+%\listoftables\thispagestyle{fancy}
+%\clearpage
+
+\pagenumbering{arabic}
+%\setcounter{page}{1}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% Ende Verzeichnis
+
+\include{Dokumente/Einleitung}
+\include{Dokumente/Methoden}
+\include{Dokumente/Ergebnisse}
+\include{Dokumente/Conclusio}
+%\section{Literaturanalyse}
+%\input{Dokument/Literaturanalyse}
+
+%\input{Dokument/Experiment}
+
+%\input{Dokument/Vergleich}
+
+%\input{Dokument/Reflexion}
+
+
+
+
+
+%\section{Darstellungsformen von Bildern}
+%input fügt den Text ein als wäre hier gleich weitergeschrieben worden
+%\input{Dokument/Beispiel_Abbildungen}
+%include fügt vor und nach dem Text ein \clearpage ein
+%\include{Dokument/Beispiel_Abbildungen}
+
+%\section{Textformatierung}
+%hier muss ein Text stehen.
+%Es besteht die Möglichkeit das Dokument in mehrere Teile aufzuteilen und danach im Hauptdokument einzubinden.
+%\input{Dokument/Kapitel_1.tex}
+
+
+%\large
+%\begin{figure}[h!]
+%\centering%\begin{center}
+%\fbox{Ich bin ein gerahmter Text}
+%\end{center}
+%\caption{Textrahmen}
+%\label{fig: Textrahmen}
+%\caption{\label{fig:Text2}Textrahmenmuster}
+%\end{figure}
+
+\printbibliography 
+\newpage
+
+%\section{Aufzählungen}
+%\subsection{Nummerierte Aufzählung}
+%\begin{enumerate}
+%\item Festplatte
+%\item Netzteil
+%\item \dots
+%\end{enumerate}
+%\subsection{Symbolbasierte Aufzählung}
+%\begin{itemize}
+%\item Festplatte
+%\item Netzteil
+%\item \dots
+%\end{itemize}
+
+%Einbinden eines Quellenverzeichnisses
+
+%\todo[inline, color=orange!50]{todo: Die URL ist länger, als die Seite breit ist. Damit ein Umbruch eingefügt wird, gehört im "`main.tex"' nach dem Befehl "`UrlBreaks"' gesucht und ergänzt damit auch ein "` - "' ein mögliches Zeichen für einen Umbruch ist. Dies kann dann auskommentiert oder gelöscht werden.}
+
+\include{Verzeichnis/Quellenverzeichnis}
+
+%Als Beispiele für Literaturverzeichnis
+%Das ist eine Referenz auf die Quelle Musterquelle1 \cite{Musterquelle1} von der bibliography.bib Datei
+%Das ist eine Referenz auf die Quelle Musterquelle2 \cite{Musterquelle2} von der bibliography.bib Datei
+%Das ist eine Referenz auf die Quelle TestManual \cite{TestManual} von der bibliography.bib Datei
+%Das ist eine Referenz auf die Quelle masterthesis \cite{mastersthesis} von der bibliography.bib Datei
+
+%Einbinden des Literaturverzeichnisses
+\include{Verzeichnis/Literaturverzeichnis}
+
+
+\end{document}

@@ -1,0 +1,43 @@
+\subsection{Induktive Statistik}
+In diesem Abschnitt wird die Variable \textit{depth} (relative Tiefe in \%) untersucht. 
+Die Analyse umfasst die Bestimmung von Konfidenzintervallen, Tests auf Normalverteilung sowie einen gerichteten t-Test zum Vergleich von Schliffqualitäten.
+
+\subsubsection{Konfidenzintervalle}
+Für die Variable \textit{depth} wurde ein Konfidenzniveau von $95\,\%$ gewählt. 
+Die Quantile ergeben folgendes Intervall für die Grundgesamtheit:
+\begin{equation}
+    CI_{95\%} = [58,6\,\%; 64,4\,\%] \text{}
+\end{equation}
+
+\subsubsection{Test auf Normalverteilung}
+Zur Überprüfung der Normalverteilung der Variable \textit{depth} wurde der Kolmogorov-Smirnov-Test (KS-Test) herangezogen.
+Die Hypothesen wurden wie folgt definiert:
+\begin{itemize}
+    \item $H_0$: Die Variable \textit{depth} folgt einer Normalverteilung.
+    \item $H_1$: Die Variable \textit{depth} folgt keiner Normalverteilung.
+\end{itemize}
+
+Die Testergebnisse für den ursprünglichen Datensatz sowie den gefilterten Datensatz (Ausschluss der extremen $2\,\%$) lauten:
+\begin{itemize}
+    \item \textbf{Originaldaten:} $D = 0,0759$, $p < 2,2 \cdot 10^{-16}$.
+    \item \textbf{Gefilterte Daten:} $D = 0,0630$, $p < 2,2 \cdot 10^{-16}$.
+\end{itemize}
+Aufgrund der extrem kleinen p-Werte wird $H_0$ in beiden Fällen verworfen. 
+Das deudet signifikant darauf hin, dass die Daten nicht normalverteilt sein.
+
+\subsubsection{Gerichteter t-Test}
+Es wurde untersucht, ob \textit{cut} (Schliffqualität) einen Einfluss auf die Tiefe des Diamanten hat. Konkret wurde getestet, ob Diamanten mit der Qualität \"Fair\" tiefer geschnitten sind als jene mit der Qualität \"Ideal\".
+\begin{itemize}
+    \item $H_0: \mu_{\text{Fair}} \le \mu_{\text{Ideal}}$
+    \item $H_1: \mu_{\text{Fair}} > \mu_{\text{Ideal}}$
+\end{itemize}
+
+Die statistische Auswertung lieferte folgende Kennzahlen:
+\begin{itemize}
+    \item $t \approx 25,65$ bei $df \approx 1618,36$ Freiheitsgraden.
+    \item $p \approx 2,51 \cdot 10^{-122}$.
+    \item Geschätzte Differenz (\textit{estimate}): $2,33\,\%$.
+    \item Untere Grenze des Konfidenzintervalls ($lower\_ci$): $2,18\,\%$.
+\end{itemize}
+
+Da $p < \alpha$ ($0,05$), wird $H_0$ verworfen. Mit einer Konfidenz von $95\,\%$ kann bestätigt werden, dass \"Fair\" geschnittene Diamanten im Mittel mindestens $2,18\,\%$ tiefer sind als \"Ideal\" geschnittene.

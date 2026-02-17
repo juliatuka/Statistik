@@ -1,0 +1,11 @@
+\subsection{Zusammenfassung und abschließendes Fazit}
+Die statistische Untersuchung des \textit{diamonds}-Datensatzes verdeutlicht die komplexen Abhängigkeiten zwischen physischen Attributen und der Preisgestaltung auf dem Diamantenmarkt. Die explorative Analyse bestätigte die starke Rechtsschiefe der Preisverteilung sowie die dominante Rolle des Gewichts (\textit{carat}) als primärer Preisdeterminante.
+\\
+\\
+Im Bereich der induktiven Statistik lieferten die durchgeführten Tests klare Evidenz gegen eine Normalverteilung der Variable \textit{depth}. Der gerichtete t-Test bestätigte zudem signifikante Unterschiede in den Proportionen verschiedener Schliffqualitäten, wobei \textit{Fair}-geschnittene Diamanten im Mittel eine größere relative Tiefe aufweisen als \textit{Ideal}-geschnittene Exemplare.
+\\
+\\
+Die prädiktive Modellierung unterstrich die Relevanz der Merkmalsselektion. Während das Vollmodell (Modell 3) durch die Einbeziehung aller verfügbaren Variablen die höchste Anpassungsgüte innerhalb des Trainings- und Validationsdatensatzes erzielte, offenbarten die Ergebnisse am Test-Set eine Überlegenheit des domänenspezifischen Modells 4. Mit einem RMSE von $1180,25$ am Test-Set demonstriert dieses auf den \textit{4Cs} basierende Modell eine höhere Robustheit und Generalisierungsfähigkeit.
+\\
+\\
+Abschließend lässt sich festhalten, dass für eine präzise Preisfindung nicht die maximale Anzahl an geometrischen Messwerten entscheidend ist, sondern die Konzentration auf industriell etablierte Qualitätsstandards. Die identifizierte Multikollinearität zwischen Gewicht und Abmessungen legt nahe, dass reduzierte Modelle in der praktischen Anwendung stabilere Schätzungen liefern und weniger anfällig für \textit{Overfitting} sind.

@@ -1,0 +1,33 @@
+\subsection{Regressionsmodellierung und Evaluation}
+In diesem Abschnitt werden die vier entwickelten Regressionsmodelle detailliert beschrieben und hinsichtlich ihrer prädiktiven Performance auf den Train-, Validations- und Testdatensätzen evaluiert.
+
+\subsubsection{Modell 1: Metrischer Basisansatz}
+Das erste Modell verfolgt einen naiven Ansatz und konzentriert sich auf Variablen mit der höchsten bivariaten Korrelation zum Preis. Als Prädiktoren dienen das Gewicht (\texttt{carat}) sowie die räumlichen Dimensionen (\texttt{x}, \texttt{y}, \texttt{z}). Trotz der hohen Korrelation der Einzelvariablen zeigt das Modell mit einem $RMSE$ von $1505,60$ im Training und $1518,87$ in der Validation eine vergleichsweise geringe Präzision. Auf dem Testset steigt der Fehler weiter auf einen $RMSE$ von $1704,63$ an.
+
+\subsubsection{Modell 2: Erweitertes numerisches Modell}
+Modell 2 erweitert den ersten Ansatz um die Kennzahlen \texttt{depth} (Gesamttiefe) und \texttt{table} (Tafelbreite). Ziel ist es zu überprüfen, ob zusätzliche geometrische Verhältnisse den Erklärungsgehalt signifikant steigern. Die Ergebnisse zeigen jedoch nur eine marginale Verbesserung der Fehlerwerte mit einem $RMSE$ von $1488,48$ im Training und $1489,19$ in der Validation. Die Einbeziehung dieser Variablen führt kaum zu einem signifikanten Informationsgewinn, da ihr Einfluss im Vergleich zur Karatzahl untergeordnet bleibt.
+
+\subsubsection{Modell 3: Vollständiges Prädiktionsmodell}
+Dieses Modell nutzt den maximalen Informationsgehalt des Datensatzes durch die Kombination aller metrischen Variablen mit den kategorialen Faktoren \texttt{cut}, \texttt{color} und \texttt{clarity}. Mit einem Bestimmtheitsmaß ($R^2$) von ca. $0,92$ erzielt es die höchste Anpassungsgüte im Training. Der $RMSE$ sinkt hierbei auf $1130,66$ (Train) bzw. $1130,54$ (Validation). Die minimale Differenz zwischen Trainings- und Validationsfehler deutet zunächst auf eine hohe Stabilität innerhalb dieser Datensegmente hin.
+
+\subsubsection{Modell 4: Domänenspezifischer Fokus (4Cs)}
+Modell 4 orientiert sich an der industriellen Bewertungspraxis und reduziert die Prädiktoren auf die sogenannten \cite{noauthor_why_nodate}\"4Cs\": \texttt{carat}, \texttt{cut}, \texttt{color} und \texttt{clarity}. Es dient dazu, den Einfluss der reinen Abmessungen (\texttt{x}, \texttt{y}, \texttt{z}) zu isolieren. Mit einem $RMSE$ von $1146,88$ im Validationset erweist sich dieses Modell als fast so leistungsstark wie das Vollmodell. Bemerkenswert ist, dass Modell 4 am finalen Testset mit einem $RMSE$ von $1180,25$ den geringsten Fehlerwert aller Modelle erzielt. Dies belegt eine überlegene Generalisierungsfähigkeit für neue Daten, während Modell 3 Anzeichen von Overfitting zeigt ($RMSE$ Test: $1258,18$).
+
+
+\subsection{Modellvergleich und Generalisierungsfähigkeit}
+Trotz der hohen Güte von Modell 3 im Training zeigt der finale Test am ungesehenen Test-Set eine überlegene Performance des Modells 4, welches sich auf die domänenspezifischen 4Cs (siehe oben) konzentriert. Während Modell 3 Anzeichen von Overfitting aufweist (RMSE Test: $1258,18$), erzielt Modell 4 mit einem RMSE von $1180,25$ eine deutlich bessere Generalisierung.
+
+\begin{table}[h]
+\centering
+\caption{Vergleich der statistischen Kennzahlen und Informationskriterien}
+\begin{tabular}{lcccc}
+\hline
+\textbf{Metrik} & \textbf{Modell 1} & \textbf{Modell 2} & \textbf{Modell 3} & \textbf{Modell 4} \\ \hline
+RMSE (Training) & 1505,60 & 1488,48 & 1130,66 & 1159,73 \\
+RMSE (Test) & 1704,63 & 1559,43 & 1258,18 & \textbf{1180,25} \\
+AIC & 565258,5 & 564522,6 & \textbf{546766,1} & 548398,7 \\ \hline
+\end{tabular}
+\end{table}
+
+Die Modellselektion mittels des Akaike-Informationskriteriums (AIC) bestätigt zwar Modell 3 als das optimal  Modell innerhalb der Trainingsdaten, die Anwendung am Test-Set priorisiert jedoch Modell 4 aufgrund seiner Robustheit gegenüber Multikollinearität.
+
