@@ -4,7 +4,7 @@ Dieses Projekt umfasst eine vollständige statistische Analyse des diamonds-Date
 
 ## Projektübersicht
 
-Das Projekt wurde als Jupyter Notebook (.ipynb) mit dem R-Kernel entwickelt und mittels Quarto in einen HTML-Report exportiert.
+Das Projekt wurde als Jupyter Notebook (.ipynb) mit dem R-Kernel entwickelt und sowohl als R-File und HTML exportiert.
 
 ## Ausführung
 
